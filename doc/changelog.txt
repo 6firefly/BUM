@@ -1,0 +1,21 @@
+2013-06-08
+   - add BumActiveRecord in order to make demo possible :) 
+2013-06-07
+   - Enabled invitation based sign Up
+2013-02-06
+   - Add to the CronController the following actions:
+      actionDeleteUnusedInvitationEmails
+
+2013-02-01 
+   - Add a settings page. Here some of the BUM module settings can be accessed and modified. 
+   - Add CronController with the following actions:
+      actionDeleteUnactivateUsers
+      actionDeleteUnverifiedEmails
+   
+      -> this actions should delete verified users, or unconfirmed emails; Attention, if a user is sett as not active and it older that hoursVerificationLinkIsActive he/she will be deleted.
+
+2013-01-31 Add: Yii::app()->user->primaryEmail; in order to find out active user primary email.
+2013-01-31 
+   - If a user has not activate his/hers account it is possible to allow him/her to log in. Event controlled by logInIfNotVerified property. Active property added: Yii::app()->user->active type: boolean;
+   - A logged in user, that is not activated, can resent it's confirmation email. (menu entry)
+2013-01-29 Add the user status property. Now every user has a status property that, of course, controls his/hers status. (So now it is possible to block/band a user). Usage: Yii::app()->user->status;  if status < 0  then the account is blocked/banned... Yii::app()->user->statusText
