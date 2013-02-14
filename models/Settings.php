@@ -31,6 +31,21 @@ class Settings extends BumActiveRecord
     CONST LOGIN_IF_NOT_VERIFIED_NO=0;
     CONST LOGIN_IF_NOT_VERIFIED_YES=1;
     
+    CONST SIGNUP_DISENABLED=0;
+    CONST SIGNUP_ENABLED=1;
+    
+    /**
+     * @return type 
+     */
+    public function getSignUpEnabledOptions()
+    {
+        // because for false - 0 the attriburte active is empty, and the first one is selected...
+        return array(
+            self::SIGNUP_DISENABLED => 'No',
+            self::SIGNUP_ENABLED => 'Yes',
+        );
+    }
+    
     /**
      * @return type 
      */

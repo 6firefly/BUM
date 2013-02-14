@@ -32,6 +32,21 @@ class BumSettings
         unset($settings);
         ///////////////////////////////
         
+        // init enabledSignUp property
+        $settings = Settings::model()->findByAttributes(array('name'=>'enabledSignUp'));
+        if($settings === NULL){
+            // create setting and init it to it's default value
+            $settings = new Settings;
+            $settings->name = 'enabledSignUp';
+            $settings->value = ($module->enabledSignUp)?"1":"0";
+            $settings->label = "SignUp is enabled?";
+            $settings->description = "If SignUp is disabled, no SignUps are allowed, in any case!";
+            $settings->save();
+        }
+        $module->enabledSignUp = $settings->value;
+        unset($settings);
+        ///////////////////////////////
+        
         // init invitationBasedSignUp property
         $settings = Settings::model()->findByAttributes(array('name'=>'invitationBasedSignUp'));
         if($settings === NULL){
@@ -40,7 +55,7 @@ class BumSettings
             $settings->name = 'invitationBasedSignUp';
             $settings->value = ($module->invitationBasedSignUp)?"1":"0";
             $settings->label = "Only invited users are allowed to SignUp?";
-            $settings->description = "";
+            $settings->description = "If SignUp is disabled, no user can SignUp, even invited ones!";
             $settings->save();
         }
         $module->invitationBasedSignUp = $settings->value;

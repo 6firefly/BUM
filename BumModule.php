@@ -59,6 +59,12 @@ class BumModule extends CWebModule
     public $invitationDefaultNumber = 5;
     
 	/**
+     * @var boolean
+     * If SignUp is disabled, no signUps are alowed in any case!
+     */
+    public $enabledSignUp = true;
+    
+	/**
      * @var integer
      * From where the invitation email is sent? (for invitations)
      */

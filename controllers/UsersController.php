@@ -335,70 +335,75 @@ class UsersController extends BumController
      */
     public function actionSignUp()
     {
-        $model=new Users;
-        $model->email = ""; // because default is "noEmail"
-        $modelUsersData=new UsersData;
-        $modelEmails = new Emails;
-        $invitation = new Invitations;
-        $validInvitation = false;
-        
-        $model->scenario = 'signUp';
-        $invitation->scenario = 'signUp';
+        if (Yii::app()->getModule('bum')->enabledSignUp) {
+            $model=new Users;
+            $model->email = ""; // because default is "noEmail"
+            $modelUsersData=new UsersData;
+            $modelEmails = new Emails;
+            $invitation = new Invitations;
+            $validInvitation = false;
 
-        if (isset($_GET['invitationCode'])) {
-            $invitation->invitation_code = $_GET['invitationCode'];
-        }
-        if (isset($_GET['email'])) {
-            $model->email = $_GET['email'];
-        }
-        
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
+            $model->scenario = 'signUp';
+            $invitation->scenario = 'signUp';
 
-        if(isset($_POST['Users']))
-        {
-            $model->attributes=$_POST['Users'];
-            
-            // check the invitation code
-            $invitation->attributes = $_POST['Invitations'];
-            $invitation->email = $model->email;
-            $invitation->setIsNewRecord(false); // because in this case this in not a new record; should be treated as an existing record
+            if (isset($_GET['invitationCode'])) {
+                $invitation->invitation_code = $_GET['invitationCode'];
+            }
+            if (isset($_GET['email'])) {
+                $model->email = $_GET['email'];
+            }
 
-            $modelUsersData->id = 0; // to pass the validation; to see if there are other problems..
-            if($invitation->validate() && $modelUsersData->validate() && $model->save()){
+            // Uncomment the following line if AJAX validation is needed
+            // $this->performAjaxValidation($model);
 
-                $modelUsersData->invitations_left=Yii::app()->getModule('bum')->invitationDefaultNumber;            
-                $modelUsersData->id = $model->id;
-                $invitation->id_user_invited = $model->id;
+            if(isset($_POST['Users']))
+            {
+                $model->attributes=$_POST['Users'];
 
-                $modelUsersData->activation_code = sha1(mt_rand(1, 99999).time().$model->email);
+                // check the invitation code
+                $invitation->attributes = $_POST['Invitations'];
+                $invitation->email = $model->email;
+                $invitation->setIsNewRecord(false); // because in this case this in not a new record; should be treated as an existing record
 
-                if($invitation->save(false) && $modelUsersData->save()){
-                    
-                    // automatically insert this email into emails table!
-                    $modelEmails->id_user = $model->id;
-                    $modelEmails->name = $model->email;
-                    $modelEmails->save();
-                    
-                    $message = $this->sendSignUpEmail($modelUsersData);
+                $modelUsersData->id = 0; // to pass the validation; to see if there are other problems..
+                if($invitation->validate() && $modelUsersData->validate() && $model->save()){
 
-                    if(Yii::app()->mail->send($message)){
-                        Yii::app()->user->setFlash('success', "A comfirmation email has been sent to the provided email address!");
-                        //Yii::app()->user->setFlash('success', "<p>{$message->body}</p>");
-                        $this->redirect(array('/site/index'));
-                    }else{
-                        Yii::app()->user->setFlash('error', "A comfirmation email could not been send to the provided email address!");
-                        $this->redirect(array('users/resendSignUpConfirmationEmail'));
+                    $modelUsersData->invitations_left=Yii::app()->getModule('bum')->invitationDefaultNumber;            
+                    $modelUsersData->id = $model->id;
+                    $invitation->id_user_invited = $model->id;
+
+                    $modelUsersData->activation_code = sha1(mt_rand(1, 99999).time().$model->email);
+
+                    if($invitation->save(false) && $modelUsersData->save()){
+
+                        // automatically insert this email into emails table!
+                        $modelEmails->id_user = $model->id;
+                        $modelEmails->name = $model->email;
+                        $modelEmails->save();
+
+                        $message = $this->sendSignUpEmail($modelUsersData);
+
+                        if(Yii::app()->mail->send($message)){
+                            Yii::app()->user->setFlash('success', "A comfirmation email has been sent to the provided email address!");
+                            //Yii::app()->user->setFlash('success', "<p>{$message->body}</p>");
+                            $this->redirect(array('/site/index'));
+                        }else{
+                            Yii::app()->user->setFlash('error', "A comfirmation email could not been send to the provided email address!");
+                            $this->redirect(array('users/resendSignUpConfirmationEmail'));
+                        }
                     }
                 }
             }
-        }
-        
-        $model->invitations = $invitation;
 
-        $this->render('signUp',array(
-            'model'=>$model,
-        ));
+            $model->invitations = $invitation;
+
+            $this->render('signUp',array(
+                'model'=>$model,
+            ));
+        }else{
+            Yii::app()->user->setFlash('notice', "SignUp is disabled! No SingUp is allowed!");
+            $this->render('noSignUp');
+        }
     }
     
     /**
