@@ -169,11 +169,15 @@
             <fieldset>
                 <legend>User things:</legend><?php
                 
-                ?><div class="row"><?php 
-                    echo $form->labelEx($modelUsersData,'invitations_left'); 
-                    echo $form->textField($modelUsersData,'invitations_left',array('maxlength'=>5)); 
-                    echo $form->error($modelUsersData,'invitations_left'); 
-                ?></div><?php
+                if(Yii::app()->getModule('bum')->invitationBasedSignUp || Yii::app()->getModule('bum')->invitationButtonDisplay):
+                    ?><div class="row"><?php 
+                        echo $form->labelEx($modelUsersData,'invitations_left'); 
+                        echo $form->textField($modelUsersData,'invitations_left',array('maxlength'=>5)); 
+                        echo $form->error($modelUsersData,'invitations_left'); 
+                    ?></div><?php
+                else:
+                        echo $form->hiddenField($modelUsersData,'invitations_left'); 
+                endif;
                 
                 ?><div class="row"><?php 
                     echo $form->labelEx($modelUsersData,'obs'); 
