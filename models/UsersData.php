@@ -60,7 +60,7 @@ class UsersData extends BumActiveRecord
 			array('id', 'required'),
 			array('site', 'length', 'max'=>1500),
 			array('facebook_address, twitter_address', 'length', 'max'=>60),
-			array('description', 'safe'),
+			array('description, obs', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			// array('id, description, site, facebook_address, twitter_address', 'safe', 'on'=>'search'), // actually for now there is no search facility for this model
