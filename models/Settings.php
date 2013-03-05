@@ -37,7 +37,7 @@ class Settings extends BumActiveRecord
     /**
      * @return type 
      */
-    public function getSignUpEnabledOptions()
+    public static function getSignUpEnabledOptions()
     {
         // because for false - 0 the attriburte active is empty, and the first one is selected...
         return array(
@@ -49,7 +49,7 @@ class Settings extends BumActiveRecord
     /**
      * @return type 
      */
-    public function getInvitationBasedOptions()
+    public static function getInvitationBasedOptions()
     {
         // because for false - 0 the attriburte active is empty, and the first one is selected...
         return array(
@@ -61,7 +61,7 @@ class Settings extends BumActiveRecord
     /**
      * @return type 
      */
-    public function getInvitationDisplayButtonOptions()
+    public static function getInvitationDisplayButtonOptions()
     {
         // because for false - 0 the attriburte active is empty, and the first one is selected...
         return array(
@@ -73,7 +73,7 @@ class Settings extends BumActiveRecord
     /**
      * @return type 
      */
-    public function getLogInIfNotVerifiedOptions()
+    public static function getLogInIfNotVerifiedOptions()
     {
         // because for false - 0 the attriburte active is empty, and the first one is selected...
         return array(

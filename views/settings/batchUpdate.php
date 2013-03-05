@@ -73,7 +73,7 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                                     echo CHtml::label($setting->label,"Settings[$i]value"); 
                                 ?></TD>
                                 <TD><?php 
-                                    echo CHtml::activeDropDownList($setting,"[$i]value", $setting->getLogInIfNotVerifiedOptions()); 
+                                    echo CHtml::activeDropDownList($setting,"[$i]value", Settings::getLogInIfNotVerifiedOptions()); 
                                 ?></TD>
                             </TR><?php
                             ?><TR><TD colspan="2"><?php 
@@ -90,7 +90,7 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                                     echo CHtml::label($setting->label,"Settings[$i]value"); 
                                 ?></TD>
                                 <TD><?php 
-                                    echo CHtml::activeDropDownList($setting,"[$i]value", $setting->getInvitationBasedOptions()); 
+                                    echo CHtml::activeDropDownList($setting,"[$i]value", Settings::getInvitationBasedOptions()); 
                                 ?></TD>
                             </TR><?php
                             ?><TR><TD colspan="2"><?php 
@@ -107,7 +107,7 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                                     echo CHtml::label($setting->label,"Settings[$i]value"); 
                                 ?></TD>
                                 <TD><?php 
-                                    echo CHtml::activeDropDownList($setting,"[$i]value", $setting->getInvitationDisplayButtonOptions()); 
+                                    echo CHtml::activeDropDownList($setting,"[$i]value", Settings::getInvitationDisplayButtonOptions()); 
                                 ?></TD>
                             </TR><?php
                             ?><TR><TD colspan="2"><?php 
@@ -124,7 +124,7 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                                     echo CHtml::label($setting->label,"Settings[$i]value"); 
                                 ?></TD>
                                 <TD><?php 
-                                    echo CHtml::activeDropDownList($setting,"[$i]value", $setting->getSignUpEnabledOptions()); 
+                                    echo CHtml::activeDropDownList($setting,"[$i]value", Settings::getSignUpEnabledOptions()); 
                                 ?></TD>
                             </TR><?php
                             ?><TR><TD colspan="2"><?php 

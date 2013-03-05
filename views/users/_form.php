@@ -111,13 +111,13 @@
             if( ( Yii::app()->user->checkAccess('users_all_view')) ):
                 ?><div class="row"><?php 
                     echo $form->labelEx($model,'active'); 
-                    echo $form->dropDownList($model,'active', $model->getActiveOptions()); 
+                    echo $form->dropDownList($model,'active', Users::getActiveOptions()); 
                     echo $form->error($model,'active'); 
                 ?></div><?php 
                 
                 ?><div class="row"><?php 
                     echo $form->labelEx($model,'status'); 
-                    echo $form->dropDownList($model,'status', $model->getStatusOptions()); 
+                    echo $form->dropDownList($model,'status', Users::getStatusOptions()); 
                     echo $form->error($model,'status'); 
                 ?></div><?php 
             endif; 

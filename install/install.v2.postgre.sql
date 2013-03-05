@@ -280,3 +280,15 @@ CREATE TRIGGER users_data_bu BEFORE UPDATE ON users_data
   
 /***************************************************************************/
 
+INSERT INTO settings (id, name, value, label, description) VALUES
+	(1, 'logInIfNotVerified', '0', 'Allow users to LogIn if they are not active?', ''),
+	(2, 'enabledSignUp', '0', 'SignUp is enabled?', 'If SignUp is disabled, no SignUps are allowed, in any case!'),
+	(3, 'invitationBasedSignUp', '0', 'Only invited users are allowed to SignUp?', 'If SignUp is disabled, no user can SignUp, even invited ones!'),
+	(4, 'invitationButtonDisplay', '0', 'Display the invitation button to all users?', ''),
+	(5, 'invitationDefaultNumber', '5', 'Default number of invitations per user? (if <0 = infinit number)', ''),
+	(6, 'invitationEmail', 'webmaster@localhost', 'Invitation email is sent from:', ''),
+	(7, 'hoursInvitationLinkIsActive', '144', 'How many hours the invitation link is active? (if <0 = forever)', ''),
+	(8, 'hoursActivationLinkIsActive', '72', 'How many hours the activation link is active? (if <0 = forever)', ''),
+	(9, 'notificationSignUpEmail', 'webmaster@localhost', 'Activation email is sent from:', ''),
+	(10, 'hoursVerificationLinkIsActive', '144', 'How many hours the email verification link is active? (if <0 = forever)', 'How many hours the email verification link is active? (when user associates a new email address to his/hers account)'),
+	(11, 'notificationVerificationEmail', 'webmaster@localhost', 'Verification email is sent from:', '');

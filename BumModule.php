@@ -127,6 +127,9 @@ class BumModule extends CWebModule
             Yii::app()->user->setFlash('notice install-on', "After instalation is complete please set install property to false.");
         }
         
+        //BumSettings::checkInitSettings(); // check and set the settings 
+        // => not working => infinite loop;
+
 	}
 
 	public function beforeControllerAction($controller, $action)

@@ -35,12 +35,12 @@
 
 	<div class="row">
 		<?php echo $form->label($model,'active'); ?>
-        <?php echo $form->dropDownList($model,'active', array(""=>"") + $model->getActiveOptions()); ?>
+        <?php echo $form->dropDownList($model,'active', array(""=>"") + Users::getActiveOptions()); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->label($model,'status'); ?>
-        <?php echo $form->dropDownList($model,'status', array(""=>"") + $model->getStatusOptions()); ?>
+        <?php echo $form->dropDownList($model,'status', array(""=>"") + Users::getStatusOptions()); ?>
 	</div>
 
 	<div class="row">

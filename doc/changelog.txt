@@ -1,6 +1,8 @@
-2013-06-08
+2013-03-05
+   - Updating install controller to appropriate documentation.
+2013-02-08
    - add BumActiveRecord in order to make demo possible :) 
-2013-06-07
+2013-02-07
    - Enabled invitation based sign Up
 2013-02-06
    - Add to the CronController the following actions:
@@ -12,7 +14,7 @@
       actionDeleteUnactivateUsers
       actionDeleteUnverifiedEmails
    
-      -> this actions should delete verified users, or unconfirmed emails; Attention, if a user is sett as not active and it older that hoursVerificationLinkIsActive he/she will be deleted.
+      -> this actions should delete unverified users, or unconfirmed emails; Attention, if a user is set as not active and it older that hoursVerificationLinkIsActive he/she will be deleted.
 
 2013-01-31 Add: Yii::app()->user->primaryEmail; in order to find out active user primary email.
 2013-01-31 

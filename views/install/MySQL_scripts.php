@@ -23,15 +23,10 @@ $this->menu=array(
 	array('label'=>'Usefull things (How to?)', 'url'=>array('install/howTo'), 'visible'=>($this->module->install)),
 );
 
+$file = file_get_contents(__DIR__ . DIRECTORY_SEPARATOR .  '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'install' . DIRECTORY_SEPARATOR . 'install.v2.MySQL.sql');
+
 ?>
-<h1><?php echo $this->id . '/' . $this->action->id; ?></h1>
+<PRE><?php
+    echo $file;
+?></PRE><?php
 
-<p>Basic User Management (BUM) module aims to be a simple and easy to use module, but in the same time a powerful one in managing users.<br/>
-The module does not intend to "reinvent the wheel", so whenever a task not related with user management is needed, 
-it make use of other great modules (like yii-mail and/or RBAM).<br/>
-This module has a simple and intuitive administration panel and response to basic user administration needs. Enjoy it.<BR/>
-<BR/>
-Feedback is welcomed. :)<BR/>
-</p>
-
-<hr/>

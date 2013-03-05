@@ -90,9 +90,9 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 	</H3>
 
     <H4>
-        <?php echo CHtml::encode($model->getAttributeLabel('active')); ?>:
-        <b><?php echo CHtml::encode($model->getActiveText()); ?></b><BR/>
         <?php if( ( Yii::app()->user->checkAccess('users_all_view')) ): ?>
+            <?php echo CHtml::encode($model->getAttributeLabel('active')); ?>:
+            <b><?php echo CHtml::encode($model->getActiveText()); ?></b><BR/>
             <?php echo CHtml::encode($model->getAttributeLabel('status')); ?>:
             <b><?php echo CHtml::encode($model->getStatusText()); ?></b>
         <?php endif; ?>

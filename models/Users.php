@@ -58,7 +58,7 @@ class Users extends BumActiveRecord
      * Get the active status
      * @return type 
      */
-    public function getActiveOptions()
+    public static function getActiveOptions()
     {
         // because for false - 0 the attriburte active is empty, and the first one is selected...
         return array(
@@ -80,7 +80,7 @@ class Users extends BumActiveRecord
      * Get the active status
      * @return type 
      */
-    public function getStatusOptions()
+    public static function getStatusOptions()
     {
         // because for false - 0 the attriburte active is empty, and the first one is selected...
         return array(

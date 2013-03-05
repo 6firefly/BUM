@@ -11,7 +11,8 @@
 /* @var $this InstallController */
 
 $this->breadcrumbs=array(
-	'Install',
+	'Install' => array('install/'),
+	'How To',
 );
 
 $this->menu=array(    
@@ -26,12 +27,31 @@ $this->menu=array(
 ?>
 <h1><?php echo $this->id . '/' . $this->action->id; ?></h1>
 
-<p>Basic User Management (BUM) module aims to be a simple and easy to use module, but in the same time a powerful one in managing users.<br/>
-The module does not intend to "reinvent the wheel", so whenever a task not related with user management is needed, 
-it make use of other great modules (like yii-mail and/or RBAM).<br/>
-This module has a simple and intuitive administration panel and response to basic user administration needs. Enjoy it.<BR/>
-<BR/>
-Feedback is welcomed. :)<BR/>
-</p>
-
-<hr/>
+<UL>
+    <LI>
+        How to check if a user is active:
+        <DIV class="box">
+            Yii::app()->user->active; //type: boolean;
+        </DIV>
+    </LI>
+    <LI>
+        How to find a user primary email:
+        <DIV class="box">
+            Yii::app()->user->primaryEmail;
+        </DIV>
+    </LI>
+    <LI>
+        How to find a user status code:
+        <DIV class="box">
+            Yii::app()->user->status;
+        </DIV>
+    </LI>
+    <LI>
+        How to find a user status text:
+        <DIV class="box">
+            Yii::app()->user->statusText;
+        </DIV>
+    </LI>
+    
+    
+</UL>

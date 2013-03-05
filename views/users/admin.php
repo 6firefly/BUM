@@ -107,12 +107,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
         array(
             'name'=>'active',
             'value'=>'$data->getActiveText()',
-            'filter' => $model->getActiveOptions(),
+            'filter' => Users::getActiveOptions(),
         ),
         array(
             'name'=>'status',
             'value'=>'$data->getStatusText()',
-            'filter' => $model->getStatusOptions(),
+            'filter' => Users::getStatusOptions(),
         ),
 		'name',
 		'surname',
