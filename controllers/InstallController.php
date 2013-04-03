@@ -131,26 +131,47 @@ class InstallController extends BumController
                 $taskTree = array();
                 $operationTree = array();
                 
-                $operation = $auth->createOperation('users_admin', 'View all users + options.');
-                    $operationTree[] = array('text'=>"<B>{$operation->name}</B> operation <I>{$operation->description}</I>");
-                $operation = $auth->createOperation('users_create', 'Create a user.');
-                    $operationTree[] = array('text'=>"<B>{$operation->name}</B> operation <I>{$operation->description}</I>");
-                $operation = $auth->createOperation('users_delete', 'Delete a user.');
-                    $operationTree[] = array('text'=>"<B>{$operation->name}</B> operation <I>{$operation->description}</I>");
-                $operation = $auth->createOperation('users_all_view', 'View all users.');
-                    $operationTree[] = array('text'=>"<B>{$operation->name}</B> operation <I>{$operation->description}</I>");
-                $operation = $auth->createOperation('users_profile_update', 'Update a user profile.');
-                    $operationTree[] = array('text'=>"<B>{$operation->name}</B> operation <I>{$operation->description}</I>");
-                $operation = $auth->createOperation('users_all_privateProfile_view', 'View a user private profile.');
-                    $operationTree[] = array('text'=>"<B>{$operation->name}</B> operation <I>{$operation->description}</I>");
+                if(!$auth->getAuthItem('users_admin')){
+                    $operation = $auth->createOperation('users_admin', 'View all users + options.');
+                        $operationTree[] = array('text'=>"<B>{$operation->name}</B> operation <I>{$operation->description}</I>");
+                }
+                if(!$auth->getAuthItem('users_create')){
+                    $operation = $auth->createOperation('users_create', 'Create a user.');
+                        $operationTree[] = array('text'=>"<B>{$operation->name}</B> operation <I>{$operation->description}</I>");
+                }
+                if(!$auth->getAuthItem('users_delete')){
+                    $operation = $auth->createOperation('users_delete', 'Delete a user.');
+                        $operationTree[] = array('text'=>"<B>{$operation->name}</B> operation <I>{$operation->description}</I>");
+                }
+                if(!$auth->getAuthItem('users_all_view')){
+                    $operation = $auth->createOperation('users_all_view', 'View all users.');
+                        $operationTree[] = array('text'=>"<B>{$operation->name}</B> operation <I>{$operation->description}</I>");
+                }
+                if(!$auth->getAuthItem('users_profile_update')){
+                    $operation = $auth->createOperation('users_profile_update', 'Update a user profile.');
+                        $operationTree[] = array('text'=>"<B>{$operation->name}</B> operation <I>{$operation->description}</I>");
+                }
+                if(!$auth->getAuthItem('users_all_privateProfile_view')){
+                    $operation = $auth->createOperation('users_all_privateProfile_view', 'View a user private profile.');
+                        $operationTree[] = array('text'=>"<B>{$operation->name}</B> operation <I>{$operation->description}</I>");
+                }
+                if(!$auth->getAuthItem('password_change')){
+                    $operation = $auth->createOperation('password_change', 'With this right user can change the password without knowing the old password.');
+                        $operationTree[] = array('text'=>"<B>{$operation->name}</B> operation <I>{$operation->description}</I>");
+                }
 
-                $task = $auth->createTask('users_manage', 'Manage users!');
-                $task->addChild('users_admin');
-                $task->addChild('users_create');
-                $task->addChild('users_delete');
-                $task->addChild('users_all_view');
-                $task->addChild('users_profile_update');
-                $task->addChild('users_all_privateProfile_view');
+                if(!$auth->getAuthItem('users_manage')){
+                    $task = $auth->createTask('users_manage', 'Manage users!');
+                }else{
+                     $task = $auth->getAuthItem('users_manage');
+                }
+                if(!$task->hasChild('users_admin')) $task->addChild('users_admin');
+                if(!$task->hasChild('users_create')) $task->addChild('users_create');
+                if(!$task->hasChild('users_delete')) $task->addChild('users_delete');
+                if(!$task->hasChild('users_all_view')) $task->addChild('users_all_view');
+                if(!$task->hasChild('users_profile_update')) $task->addChild('users_profile_update');
+                if(!$task->hasChild('users_all_privateProfile_view')) $task->addChild('users_all_privateProfile_view');
+                if(!$task->hasChild('password_change')) $task->addChild('password_change');
                 
                 $taskTree[] = array(
                         'text' => "<B>{$task->name}</B> task <I>{$task->description}</I>", 
@@ -159,36 +180,56 @@ class InstallController extends BumController
 
                 $operationTree = array();
                 
-                $operation = $auth->createOperation('emails_create', 'Create a secondary email.');
-                    $operationTree[] = array('text'=>"<B>{$operation->name}</B> operation <I>{$operation->description}</I>");
-                $operation = $auth->createOperation('emails_verificationLink_resend', 'Resend the verification link.');
-                    $operationTree[] = array('text'=>"<B>{$operation->name}</B> operation <I>{$operation->description}</I>");
-                $operation = $auth->createOperation('emails_delete', 'Delete a secondary email.');
-                    $operationTree[] = array('text'=>"<B>{$operation->name}</B> operation <I>{$operation->description}</I>");
-                $operation = $auth->createOperation('emails_all_view', 'View all emais.');
-                    $operationTree[] = array('text'=>"<B>{$operation->name}</B> operation <I>{$operation->description}</I>");
+                if(!$auth->getAuthItem('emails_create')){
+                    $operation = $auth->createOperation('emails_create', 'Create a secondary email.');
+                        $operationTree[] = array('text'=>"<B>{$operation->name}</B> operation <I>{$operation->description}</I>");
+                }
+                if(!$auth->getAuthItem('emails_verificationLink_resend')){
+                    $operation = $auth->createOperation('emails_verificationLink_resend', 'Resend the verification link.');
+                        $operationTree[] = array('text'=>"<B>{$operation->name}</B> operation <I>{$operation->description}</I>");
+                }
+                if(!$auth->getAuthItem('emails_delete')){
+                    $operation = $auth->createOperation('emails_delete', 'Delete a secondary email.');
+                        $operationTree[] = array('text'=>"<B>{$operation->name}</B> operation <I>{$operation->description}</I>");
+                }
+                if(!$auth->getAuthItem('emails_all_view')){
+                    $operation = $auth->createOperation('emails_all_view', 'View all emais.');
+                        $operationTree[] = array('text'=>"<B>{$operation->name}</B> operation <I>{$operation->description}</I>");
+                }
 
-                $task = $auth->createTask('emails_manage', 'Manage secondary emails!');
-                $task->addChild('emails_create');
-                $task->addChild('emails_verificationLink_resend');
-                $task->addChild('emails_delete');
-                $task->addChild('emails_all_view');
+                if(!$auth->getAuthItem('emails_manage')){
+                    $task = $auth->createTask('emails_manage', 'Manage secondary emails!');
+                }else{
+                     $task = $auth->getAuthItem('emails_manage');
+                }
+                if(!$task->hasChild('emails_create')) $task->addChild('emails_create');
+                if(!$task->hasChild('emails_verificationLink_resend')) $task->addChild('emails_verificationLink_resend');
+                if(!$task->hasChild('emails_delete')) $task->addChild('emails_delete');
+                if(!$task->hasChild('emails_all_view')) $task->addChild('emails_all_view');
 
                 $taskTree[] = array(
                         'text' => "<B>{$task->name}</B> task <I>{$task->description}</I>", 
                         'hasChildren' => true,
                         'children' => $operationTree);
                         
-                $task = $auth->createTask('settings_manage', 'Allow the user to change the default settings.');
+                if(!$auth->getAuthItem('settings_manage')){
+                    $task = $auth->createTask('settings_manage', 'Allow the user to change the default settings.');
+                }else{
+                     $task = $auth->getAuthItem('settings_manage');
+                }
                 
                 $taskTree[] = array(
                         'text' => "<B>{$task->name}</B> task <I>{$task->description}</I>", 
                         'hasChildren' => false);
                 
-                $role = $auth->createRole(BumDefaultInstallData::DEFAULT_ROLE_SUPER_ADMIN, 'The most powerful admin!');
-                $role->addChild('emails_manage');
-                $role->addChild('users_manage');
-                $role->addChild('settings_manage');
+                if(!$auth->getAuthItem(BumDefaultInstallData::DEFAULT_ROLE_SUPER_ADMIN)){
+                    $role = $auth->createRole(BumDefaultInstallData::DEFAULT_ROLE_SUPER_ADMIN, 'The most powerful admin!');
+                }else{
+                     $role = $auth->getAuthItem(BumDefaultInstallData::DEFAULT_ROLE_SUPER_ADMIN);
+                }
+                if(!$role->hasChild('emails_manage')) $role->addChild('emails_manage');
+                if(!$role->hasChild('users_manage')) $role->addChild('users_manage');
+                if(!$role->hasChild('settings_manage')) $role->addChild('settings_manage');
             
                 $roleTree[] = array(
                         'text' => "<B>{$role->name}</B> role <I>{$role->description}</I>", 

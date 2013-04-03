@@ -143,6 +143,7 @@ $this->menu=array(
                                 <li>users_all_view <SMALL>operation</SMALL></li>
                                 <li>users_profile_update <SMALL>operation</SMALL> Update other users profile...</li>
                                 <li>users_all_privateProfile_view <SMALL>operation</SMALL> View other users private profile...</li>
+                                <li>password_change <SMALL>operation</SMALL> With this right user can change the password without knowing the old password.</li>
                             </UL>
 
                         </li>
@@ -162,7 +163,7 @@ $this->menu=array(
                 </li>
             </UL>
             <?php
-            echo CHtml::AjaxLink('create role/tasks/operations', array("install/InstallRights"), array('update'=>'#defaultRights'), array('id'=>'CreateAuthRights', 'live'=>false));
+            echo CHtml::AjaxLink('create/update role/tasks/operations', array("install/InstallRights"), array('update'=>'#defaultRights'), array('id'=>'CreateAuthRights', 'live'=>false));
             ?><DIV id="defaultRights"></DIV>
         </p>
 

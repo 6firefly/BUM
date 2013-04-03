@@ -16,7 +16,7 @@
 class BumWebUser extends CWebUser {
 
     // Store the model in order not to repeat the query.
-    private $_model;
+    protected $_model;
 
     // Return user's status.
     // access it by Yii::app()->user->status

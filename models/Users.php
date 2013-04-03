@@ -149,14 +149,16 @@ class Users extends BumActiveRecord
 	}
 
     /**
-     * It the password is to be changed, check first the new password..
+     * If the password is to be changed, check first the new password..
      * @param type $attribute
      * @param type $params
      */
     public function checkOldPassword($attribute,$params){
         if (strlen(trim($this->$params['dependentAttribute'])) > 0) {
-            if (!$this->validatePassword($this->$attribute)) {
-                $this->addError($attribute, "Incorrect password. Old password must be confirmed corectly before it can be changed!");
+            if(!Yii::app()->user->checkAccess("password_change")){
+                if (!$this->validatePassword($this->$attribute)) {
+                    $this->addError($attribute, "Incorrect password. Old password must be confirmed corectly before it can be changed!");
+                }
             }
         }
     }

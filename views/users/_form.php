@@ -88,12 +88,16 @@
             <legend>Password and access:</legend><?php 
 
             if($model->scenario == 'update'): 
-                // request for the old password only on the update scenario
-                ?><div class="row"><?php 
-                    echo $form->labelEx($model,'password_old'); 
-                    echo $form->passwordField($model,'password_old',array('size'=>45,'maxlength'=>150)); 
-                    echo $form->error($model,'password_old'); 
-                ?></div><?php 
+                
+                // If the user has the password_change right (operation) then old password is not needed anymore
+                if(!Yii::app()->user->checkAccess("password_change")):
+                    // request for the old password only on the update scenario
+                    ?><div class="row"><?php 
+                        echo $form->labelEx($model,'password_old'); 
+                        echo $form->passwordField($model,'password_old',array('size'=>45,'maxlength'=>150)); 
+                        echo $form->error($model,'password_old'); 
+                    ?></div><?php 
+                endif; 
             endif; 
 
             ?><div class="row"><?php 
