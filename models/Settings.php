@@ -34,6 +34,22 @@ class Settings extends BumActiveRecord
     CONST SIGNUP_DISENABLED=0;
     CONST SIGNUP_ENABLED=1;
     
+    CONST TRACKPASSWORDRECOVERY_DISENABLED=0;
+    CONST TRACKPASSWORDRECOVERY_ENABLED=1;
+        
+    
+    /**
+     * @return type 
+     */
+    public static function getTrackPasswordRecoveryRequestsOptions()
+    {
+        // because for false - 0 the attriburte active is empty, and the first one is selected...
+        return array(
+            self::TRACKPASSWORDRECOVERY_DISENABLED => 'No',
+            self::TRACKPASSWORDRECOVERY_ENABLED => 'Yes',
+        );
+    }
+    
     /**
      * @return type 
      */

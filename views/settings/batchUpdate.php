@@ -133,6 +133,23 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                                     echo CHtml::closeTag("SPAN");
                             ?></TD></TR><?php
                         break;
+                    case 'trackPasswordRecoveryRequests':
+                            ?><TR>
+                                <TD><?php 
+                                    echo CHtml::activeHiddenField($setting, "[$i]name");
+                                    echo CHtml::activeHiddenField($setting, "[$i]label");
+                                    echo CHtml::label($setting->label,"Settings[$i]value"); 
+                                ?></TD>
+                                <TD><?php 
+                                    echo CHtml::activeDropDownList($setting,"[$i]value", Settings::getTrackPasswordRecoveryRequestsOptions()); 
+                                ?></TD>
+                            </TR><?php
+                            ?><TR><TD colspan="2"><?php 
+                                    echo CHtml::openTag("SPAN", array("name"=>"Settings[$i]description")); 
+                                    echo $setting->description; 
+                                    echo CHtml::closeTag("SPAN");
+                            ?></TD></TR><?php
+                        break;
                     default:
                             ?><TR>
                                 <TD><?php 

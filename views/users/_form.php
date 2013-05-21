@@ -97,6 +97,7 @@
                         echo $form->passwordField($model,'password_old',array('size'=>45,'maxlength'=>150)); 
                         echo $form->error($model,'password_old'); 
                     ?></div><?php 
+                    ?><DIV class="message note">Forgot your password? Click <?php echo CHtml::link('here',array('users/passwordRecoveryWhatUser')); ?> to reset your password.</DIV><?php
                 endif; 
             endif; 
 

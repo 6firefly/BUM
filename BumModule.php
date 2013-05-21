@@ -28,7 +28,7 @@ class BumModule extends CWebModule
     public $hoursActivationLinkIsActive = 72;
     
 	/**
-     * @var integer
+     * @var string
      * From whom the confirmation email is sent? (for sign up)
      */
     public $notificationSignUpEmail = 'webmaster@localhost';
@@ -65,7 +65,7 @@ class BumModule extends CWebModule
     public $enabledSignUp = true;
     
 	/**
-     * @var integer
+     * @var string
      * From where the invitation email is sent? (for invitations)
      */
     public $invitationEmail = 'webmaster@localhost';
@@ -78,7 +78,7 @@ class BumModule extends CWebModule
     public $hoursInvitationLinkIsActive = 144;
     
 	/**
-     * @var integer
+     * @var string
      * From where the verification email is sent? (for email verification)
      */
     public $notificationVerificationEmail = 'webmaster@localhost';
@@ -94,6 +94,24 @@ class BumModule extends CWebModule
         * If operatinos like save and delete are allowed. $demoMode = true => no savings, updates and no deletions are allowed
      */
     public $demoMode = false;
+    
+	/**
+     * @var string
+     * Password recovery email is sent from:
+     */
+    public $passwordRecoveryEmail = 'webmaster@localhost';
+    
+	/**
+     * @var integer
+     * How many hours the password recovery request is active?
+     */
+    public $hoursPasswordRecoveryLinkIsActive = 10;
+    
+	/**
+     * @var boolean
+        * If it's true, than if a password recovery request expire, it is not deleted, but it's property "expired" is set to true. So in the database remain all password requests that have been made.
+     */
+    public $trackPasswordRecoveryRequests = false;
 
     // getAssetsUrl()
     //    return the URL for this module's assets, performing the publish operation
@@ -127,7 +145,7 @@ class BumModule extends CWebModule
             Yii::app()->user->setFlash('notice install-on', "After instalation is complete please set install property to false.");
         }
         
-        //BumSettings::checkInitSettings(); // check and set the settings 
+        BumSettings::checkInitSettings($this); // check and set the settings 
         // => not working => infinite loop;
 
 	}

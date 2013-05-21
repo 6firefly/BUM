@@ -53,5 +53,21 @@ $this->menu=array(
         </DIV>
     </LI>
     
-    
+    <LI>
+        How customize automatically sent email by BUM module:<br/>
+        check path: bum/views/mail/
+
+        <dl>
+            <dt>emailVerification.php</dt>
+                <dd>When a user register a new email address, this verification email is sent in order to confirm newly added email.</dd>
+            <dt>invitation.php</dt>
+                <dd>When a user invites another person to this site, this email is sent to the respective.</dd>
+            <dt>passwordRecovery.php</dt>
+                <dd>When a user request for password recovery (password reset) this email is sent to the user's email.</dd>
+            <dt>signUpEmail.php</dt>
+                <dd>When a user register, this confirmation/activation email is sent to that user.</dd>
+        </dl>
+        
+    </LI>
+            
 </UL>

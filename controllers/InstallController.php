@@ -43,6 +43,10 @@ class InstallController extends BumController
 				'actions'=>array('index', 'MySQL', 'PostgreSQL', 'InstallRights', 'InstallDefaultUser', 'MySQL_scripts', 'PostgreSQL_scripts', 'howTo'),
 				'expression'=>'Yii::app()->getModule("bum")->install',
 			),
+			array('allow',  // 
+				'actions'=>array('upgrade'),
+				'expression'=>'Yii::app()->getModule("bum")->install',
+			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			),
@@ -354,6 +358,14 @@ class InstallController extends BumController
             ));
         }
     }
+    
+    public function actionUpgrade(){
+		if ($this->module->install === true) {
+            $this->render('upgrade');
+        }else{
+        }
+    }
+    
 	// Uncomment the following methods and override them if needed
 	/*
 	public function filters()

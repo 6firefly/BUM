@@ -1,8 +1,8 @@
 <?php
 /**
- * Resend the sign up confirmation email form.
+ * Password recovery form; find user.
  *
- * @copyright	Copyright &copy; 2012 Hardalau Claudiu 
+ * @copyright	Copyright &copy; 2013 Hardalau Claudiu 
  * @package		bum
  * @license		New BSD License 
  */
@@ -12,12 +12,12 @@
 /* @var $form CActiveForm */
 ?>
 
-<h1>Reset the Confirmation Email</h1>
+<h1>Reset Your Password</h1>
 
 <div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'resend-sign-up-confirmation-email-resendSignUpConfirmationEmail-form',
+	'id'=>'email-passwordRecovery-form',
 	'enableAjaxValidation'=>false,
 )); ?>
 
@@ -39,6 +39,7 @@
                 <?php echo $form->labelEx($model,'email_or_user_name'); ?>
                 <?php echo $form->textField($model,'email_or_user_name',array('size'=>60,'maxlength'=>60, 'readonly'=>'readonly', 'value'=>Yii::app()->user->primaryEmail)); ?>
                 <?php echo $form->error($model,'email_or_user_name'); ?>
+                <DIV>If this is not the correct email, please change your primary email! Go to <?php echo CHtml::link('Update Profile Information', array('users/update', 'id'=>Yii::app()->user->id) ); ?> page.</DIV>
             </div>
         <?php endif; ?>
     </fieldset>

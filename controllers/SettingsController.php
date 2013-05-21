@@ -54,7 +54,7 @@ class SettingsController extends BumController
 	public function actionBatchUpdate()
     {
         // retrieve items to be updated in a batch mode
-        $settings =  Settings::model()->findAll(array('index'=>'id'));
+        $settings =  Settings::model()->findAll(array('order'=>'setting_order', 'index'=>'id'));
         
         if(isset($_POST['Settings']))
         {

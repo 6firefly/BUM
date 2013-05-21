@@ -6,7 +6,7 @@
  * @package		bum
  * @license		New BSD License 
  * 
- * When a user register this confirmation/activation email is sent to that user.
+ * When a user register, this confirmation/activation email is sent to that user.
  */
 
 /* @var $modelUsersData modelUsersData */

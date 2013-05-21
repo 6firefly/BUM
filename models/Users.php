@@ -137,7 +137,7 @@ class Users extends BumActiveRecord
             array('status', 'type', 'type'=>'integer'),
 			// verifyCode needs to be entered correctly
 			array('verifyCode', 'captcha', 'allowEmpty'=>!CCaptcha::checkRequirements(), 'on'=>'captchaRequired, signUp'), // see: http://www.yiiframework.com/forum/index.php/topic/21561-captcha-custom-validation/ for information
-            array('password', 'required', 'on'=>'signUp, create'),
+            array('password', 'required', 'on'=>'signUp, create, passwordReset'),
             array('password_old', 'checkOldPassword', 'dependentAttribute'=>'password', 'on'=>'update'),
             
 			array('user_name, email', 'required'),

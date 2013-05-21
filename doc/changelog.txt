@@ -1,3 +1,15 @@
+2013-05-21
+   - add password reset capability; A user can reset his/hers password base on user name (or email address), a captcha and a verification email with secret a code.
+2013-04-04
+    - fix "setting load" bug; (settings were not loaded form the database)
+    - add new column to the settings table:
+ALTER TABLE settings 
+   ADD setting_order INT NULL;
+
+2013-04-03
+   - Add password_change right: With this right user can change the password without knowing the old password.
+   - On install defaults operations/tasks/roles can now be updated, not only created! (This thing is useful if a new operation/task/role has been created.)
+
 2013-03-05
    - Updating install controller to appropriate documentation.
 2013-02-08

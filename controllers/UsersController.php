@@ -66,7 +66,7 @@ class UsersController extends BumController
 	{
 		return array(
 			array('allow',  // 
-				'actions'=>array('logIn', 'viewProfile', 'signUp', 'resendSignUpConfirmationEmail', 'activate', 'captcha'),
+				'actions'=>array('logIn', 'viewProfile', 'signUp', 'resendSignUpConfirmationEmail', 'passwordRecoveryWhatUser', 'passwordRecoveryAskCode', 'activate', 'captcha'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform certain actions; some actions may require even more rights
@@ -136,7 +136,7 @@ class UsersController extends BumController
 	public function actionViewMyPrivateProfile($id)
 	{
 		// every user has the right to view its profile...
-        // beside, the users with the right "viewOthersProfile" also has the right to view other users profile...
+        // beside, the users with the right "users_all_privateProfile_view" also has the right to view other users profile...
         if( (Yii::app()->user->id === $id) || Yii::app()->user->checkAccess('users_all_privateProfile_view')){
             $model=$this->loadModel($id);
 
@@ -411,7 +411,8 @@ class UsersController extends BumController
      */
     public function actionResendSignUpConfirmationEmail()
     {
-        $model=new ResendSignUpConfirmationEmail;
+        $model=new FindUserBy;
+        $model->scenario = 'resendSignUpConfirmationEmail';
 
         // uncomment the following code to enable ajax-based validation
         /*
@@ -422,9 +423,9 @@ class UsersController extends BumController
         }
         */
 
-        if(isset($_POST['ResendSignUpConfirmationEmail']))
+        if(isset($_POST['FindUserBy']))
         {
-            $model->attributes=$_POST['ResendSignUpConfirmationEmail'];
+            $model->attributes=$_POST['FindUserBy'];
             if($model->validate())
             {
                 if ($model->usersData === NULL){
@@ -448,6 +449,167 @@ class UsersController extends BumController
         }
         $this->render('resendSignUpConfirmationEmail',array('model'=>$model));
     }    
+    
+    /**
+     * Password recovery; find user!
+     */
+    public function actionPasswordRecoveryWhatUser()
+    {
+        $model=new FindUserBy;
+        $model->scenario = 'passwordRecoveryWhatUser';
+
+        // uncomment the following code to enable ajax-based validation
+        /*
+        if(isset($_POST['ajax']) && $_POST['ajax']==='email-passwordRecovery-form')
+        {
+            echo CActiveForm::validate($model);
+            Yii::app()->end();
+        }
+        */
+
+        if(isset($_POST['FindUserBy']))
+        {
+            $model->attributes=$_POST['FindUserBy'];
+            if($model->validate())
+            {
+                $modelPasswordRecovery = new PasswordRecovery;
+                
+                $modelPasswordRecovery->id_user = $model->user->id;
+                $modelPasswordRecovery->code = substr(md5(uniqid(rand(), true)),0,6); //generate 6 digits code
+                $modelPasswordRecovery->long_code = uniqid('', true); //generate  unique code
+                $modelPasswordRecovery->ip = Yii::app()->request->userHostAddress;
+                $modelPasswordRecovery->email = $model->user->email;
+                $modelPasswordRecovery->user_name = $model->user->user_name;
+                   
+                if($modelPasswordRecovery->save()){
+                    $message = $this->sendPasswordRecoveryEmail($modelPasswordRecovery);
+
+                    if(Yii::app()->mail->send($message)){
+                        Yii::app()->user->setFlash('success', "Check your email - a link to to a password recovery page was sent to you!");
+                        //Yii::app()->user->setFlash('success', "<p>{$message->body}</p>");
+                        $this->redirect(array('users/passwordRecoveryAskCode', 'lc'=>$modelPasswordRecovery->long_code, 'em'=> md5($modelPasswordRecovery->email)));
+                    }else{
+                        // something went wrong...
+                        Yii::app()->user->setFlash('error', "Password recovery email could not be sent; please try again later!");
+                        $this->redirect(array('/site/index'));
+                    }
+                }else{
+                    $errors = $modelPasswordRecovery->getErrors();
+                    
+                    echo '<pre>';
+                    var_dump($errors);
+                    die();
+                    // something went wrong...
+                    Yii::app()->user->setFlash('error', "Password recovery email could not be sent; please try again later!");
+                    $this->redirect(array('/site/index'));
+                }
+            }
+        }
+        $this->render('passwordRecoveryWhatUser',array('model'=>$model));
+    }    
+    
+    /**
+     * Send the reset your password email
+     * Uses Yii-Mail extension.
+     * 
+     * @param type $password_recovery
+     * @return \YiiMailMessage
+     */
+    public function sendPasswordRecoveryEmail($model){
+        $message = new YiiMailMessage;
+        
+        $message->view = 'passwordRecovery';
+        $message->setBody(array('modelPasswordRecovery'=>$model), 'text/html');
+        $message->subject = 'You requested a new password‏';
+        $message->addTo($model->email);
+        $message->from = $this->module->passwordRecoveryEmail;
+        
+        return $message;
+    }
+    
+    /**
+     * Ask for password recovery code; search it in the database; if found ask for new password; redirect to login page.
+     * @param type $lc
+     * @param type $em
+     * @param type $code
+     * @throws CHttpException
+     */
+    public function actionPasswordRecoveryAskCode($lc, $em, $code = ''){
+        // find if there is an active request for password reset having this credentials;
+        $modelPasswordRecovery = PasswordRecovery::model()->findByAttributes(array("long_code"=>$lc, "used"=>FALSE, "expired"=>FALSE), 'MD5(email)=:em', array(':em'=>$em));
+        
+        if($modelPasswordRecovery === NULL){
+            // should'n reach here; unwanted attempt to recover a password...
+			throw new CHttpException(404,'The requested page does not exist.');
+        }else{
+            // check if the password request link is still active
+            $secFromPasswordRecoveryCreation = (time() - strtotime($modelPasswordRecovery->date_of_request));
+            $hoursFromPasswordRecovery = round($secFromPasswordRecoveryCreation/(60*60));
+
+            // if the link is not active:
+            if ($hoursFromPasswordRecovery >= $this->module->hoursPasswordRecoveryLinkIsActive) {
+                // delete PasswordRecovery model data, or set it as expired...
+                if ($this->module->trackPasswordRecoveryRequests) {
+                    $modelPasswordRecovery->expired = TRUE;
+                    $modelPasswordRecovery->save();
+                }else{
+                    $modelPasswordRecovery->delete();
+                }
+    			throw new CHttpException(404,'The requested page does not exist.');
+            }else{
+                
+                // an code vas inserted; test if the code is the same as the code from the data base
+                if(isset($_POST['PasswordRecovery'])){
+                    $attributes = $_POST['PasswordRecovery'];
+                    $modelPasswordRecovery->code_inserted = $attributes['code_inserted'];
+                    
+                    $modelPasswordRecovery->scenario = 'askCode';
+                    // the code is valide:
+                    if($modelPasswordRecovery->validate()){
+                        
+                        $modelUsers=$this->loadModel($modelPasswordRecovery->id_user);
+                        $modelUsers->scenario = 'passwordReset';
+                        
+                        // a new password was set
+                        if(isset($_POST['Users'])){
+                            $attributes = $_POST['Users'];
+                            $modelUsers->password = $attributes['password'];
+                            $modelUsers->password_repeat = $attributes['password_repeat'];
+                            
+                            // the new password is a valid password:
+                            if($modelUsers->validate()){
+                                // save the new password
+                                $modelUsers->save();
+                                // set this password recovery link as used:
+                                $modelPasswordRecovery->used = TRUE;
+                                $modelPasswordRecovery->save();
+                                
+                                Yii::app()->user->setFlash('notice', "Your password had been reseted! You may now log in using your new password!");
+                                // redirect to the logIn page
+                                $this->redirect(array('/bum/users/login'));
+                            }
+                        }
+
+                        // go to password reset page
+                        $this->render('passwordRecoveryResetPassword', array(
+                            'modelPasswordRecovery' => $modelPasswordRecovery,
+                            'modelUsers'=>$modelUsers,
+                        ));
+                        Yii::app()->end();
+                    }
+                }
+                
+                if (strlen(trim($code)) > 0){
+                    $modelPasswordRecovery->code_inserted = $modelPasswordRecovery->code;
+                }
+                
+                $this->render('passwordRecoveryAskCode', array(
+                    'modelPasswordRecovery' => $modelPasswordRecovery
+                ));
+            }
+        }
+        
+    }
     
     /**
      * Send the Sign Up confirmation email
