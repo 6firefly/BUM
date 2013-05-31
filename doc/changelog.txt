@@ -1,3 +1,6 @@
+2013-05-31
+   - fix script src links (to point at the last sql version)
+   - focus on the user name in logIn page
 2013-05-21
    - add password reset capability; A user can reset his/hers password base on user name (or email address), a captcha and a verification email with secret a code.
 2013-04-04

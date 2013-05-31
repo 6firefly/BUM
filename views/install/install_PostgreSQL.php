@@ -34,7 +34,7 @@ $this->menu=array(
             Create a database, then run the sql scripts.<BR/>
             The required sql script can be found in:<BR/>
             <UL>
-                <LI><?php echo CHtml::link("bum/install/install.v2.postgre.sql", $this->createUrl("install/PostgreSQL_scripts"), array("target"=>"_blank")); ?></LI>
+                <LI><?php echo CHtml::link("bum/install/install.v2.03.postgre.sql", $this->createUrl("install/PostgreSQL_scripts"), array("target"=>"_blank")); ?></LI>
                 <LI><A href="https://code.google.com/p/yii/source/browse/trunk/framework/web/auth/schema-pgsql.sql?r=3293" target="_blank">framework/web/auth/schema-pgsql.sql</A>.</LI>
             </UL>
             <BR/>

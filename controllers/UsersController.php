@@ -496,11 +496,12 @@ class UsersController extends BumController
                 }else{
                     $errors = $modelPasswordRecovery->getErrors();
                     
-                    echo '<pre>';
-                    var_dump($errors);
-                    die();
                     // something went wrong...
-                    Yii::app()->user->setFlash('error', "Password recovery email could not be sent; please try again later!");
+                    if(Yii::app()->getModule('bum')->demoMode){
+                        Yii::app()->user->setFlash('notice', "Demo mode is active! No changes allowed!");
+                    }else{                    
+                        Yii::app()->user->setFlash('error', "Password recovery email could not be sent; please try again later!");
+                    }
                     $this->redirect(array('/site/index'));
                 }
             }

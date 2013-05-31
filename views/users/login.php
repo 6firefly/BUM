@@ -7,9 +7,13 @@ $this->pageTitle=Yii::app()->name . ' - Login';
 $this->breadcrumbs=array(
 	'Login',
 );
-?>
 
-<h1>Login</h1>
+Yii::app()->clientScript->registerScript('focus_on_username', "
+    $('#LoginForm_username').focus();
+", CClientScript::POS_READY);
+
+
+?><h1>Login</h1>
 
 <p>Please fill out the following form with your login credentials:</p>
 
