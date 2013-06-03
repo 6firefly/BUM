@@ -112,6 +112,12 @@ class BumModule extends CWebModule
         * If it's true, than if a password recovery request expire, it is not deleted, but it's property "expired" is set to true. So in the database remain all password requests that have been made.
      */
     public $trackPasswordRecoveryRequests = false;
+    
+    /**
+     * @var bool
+     * If the triggers from the database are active and used. 
+     */
+    public $db_triggers = true;
 
     // getAssetsUrl()
     //    return the URL for this module's assets, performing the publish operation

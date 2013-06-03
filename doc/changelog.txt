@@ -1,3 +1,6 @@
+2013-06-03
+   - add a property that allows to update DATETIME statistical fields without the use of triggers;
+   - minor BUG fix: please in all tables where TIMESTAMP is defined as not null, ALTER table to make it default as NULL, and no ATTRIBUTES of EXTRA... (DATETIME fields are used just for statistical reasons)
 2013-05-31
    - fix script src links (to point at the last sql version)
    - focus on the user name in logIn page

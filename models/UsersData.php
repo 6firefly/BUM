@@ -117,4 +117,14 @@ class UsersData extends BumActiveRecord
 			'criteria'=>$criteria,
 		));
 	}*/
+    
+    /**
+     * Update some datatime statistical fields.
+     */
+    public function beforeSave() {
+        if(!Yii::app()->getModule('bum')->db_triggers){
+            $this->date_of_update = new CDbExpression('NOW()');
+        }
+        return parent::beforeSave();
+    }    
 }

@@ -298,7 +298,7 @@ class InstallController extends BumController
 
                 $auth=Yii::app()->authManager;
                 if(get_class($auth) == "CPhpAuthManager"){
-                    throw new CException('Please configure authManager to user CDbAuthManager; see instalation notes!');
+                    throw new CException('Please configure authManager to user CDbAuthManager; see installation notes!');
                 }
                 $assignmentTable = $auth->assignmentTable;                
                 $sql = "INSERT INTO {$assignmentTable} (itemname, userid) 

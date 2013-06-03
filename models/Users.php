@@ -286,9 +286,6 @@ class Users extends BumActiveRecord
             // generate a salt variable
             $this->salt = self::generateSalt();
             $this->pass = $this->hashPassword($this->password, $this->salt);
-            if($this->isNewRecord){
-                $this->date_of_creation = new CDbExpression('NOW()');
-            }
         }
     }
 
@@ -305,5 +302,26 @@ class Users extends BumActiveRecord
      */
     public function isActive() {
         return $this->active;
+    }    
+    
+    
+    /**
+     * Update some datatime statistical fields.
+     */
+    public function beforeSave() {
+        if(!Yii::app()->getModule('bum')->db_triggers){
+            if($this->isNewRecord){
+                $this->date_of_creation = new CDbExpression('NOW()');
+                $this->date_of_update = new CDbExpression('NOW()');
+                $this->date_of_last_access = new CDbExpression('NOW()');
+                $this->date_of_password_last_change = new CDbExpression('NOW()');
+            }else{
+                $this->date_of_update = new CDbExpression('NOW()');
+                if (strlen(trim($this->password))>0) {
+                    $this->date_of_password_last_change = new CDbExpression('NOW()');
+                }
+            }
+        }
+        return parent::beforeSave();
     }    
 }

@@ -151,6 +151,12 @@ class Invitations extends BumActiveRecord
             unset($invitationCheck);
         }
         
+        if(!Yii::app()->getModule('bum')->db_triggers){
+            if($this->isNewRecord){
+                $this->date_of_invitation_send = new CDbExpression('NOW()');
+            }
+        }
+        
         return parent::beforeSave();
     }
 	/**
@@ -206,4 +212,5 @@ class Invitations extends BumActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+    
 }

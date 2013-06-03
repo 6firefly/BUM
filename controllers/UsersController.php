@@ -235,7 +235,7 @@ class UsersController extends BumController
             if(isset($_POST['Users']))
             {
                 
-                if( (Yii::app()->user->id === $id && (int)$_POST['Users']['status']<0)){
+                if( (Yii::app()->user->id === $id && isset($_POST['Users']['status']) && (int)$_POST['Users']['status']<0)){
                     $_POST['Users']['status'] = $model->status; // set the new statu to the preview status...
                     Yii::app()->user->setFlash('error', "You can not block your own account!");
                 }

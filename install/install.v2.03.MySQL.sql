@@ -42,10 +42,10 @@ CREATE  TABLE IF NOT EXISTS users (
   surname VARCHAR(45) NULL ,
   active BOOLEAN NOT NULL DEFAULT FALSE,
   status TINYINT NOT NULL DEFAULT 0,
-  date_of_creation TIMESTAMP NOT NULL ,
+  date_of_creation TIMESTAMP NULL ,
   date_of_update TIMESTAMP NULL ,
-  date_of_last_access TIMESTAMP NOT NULL ,
-  date_of_password_last_change TIMESTAMP NOT NULL,
+  date_of_last_access TIMESTAMP NULL ,
+  date_of_password_last_change TIMESTAMP NULL,
   
   PRIMARY KEY (id)
 )ENGINE=InnoDB;
@@ -120,7 +120,7 @@ CREATE  TABLE IF NOT EXISTS emails (
   name VARCHAR(60) NULL ,
   verified BOOLEAN NOT NULL DEFAULT FALSE,
   verification_code VARCHAR(40) NULL,
-  date_of_creation TIMESTAMP NOT NULL ,
+  date_of_creation TIMESTAMP NULL ,
   visible BOOLEAN DEFAULT FALSE ,
   
   PRIMARY KEY (id) ,
@@ -147,7 +147,7 @@ CREATE  TABLE IF NOT EXISTS password_recovery (
   email VARCHAR(60) NOT NULL ,
   ip VARBINARY(16) NOT NULL,
   used BOOLEAN NOT NULL DEFAULT FALSE,
-  date_of_request TIMESTAMP NOT NULL ,
+  date_of_request TIMESTAMP NULL ,
   expired BOOLEAN NOT NULL DEFAULT FALSE,
 
   PRIMARY KEY (id),

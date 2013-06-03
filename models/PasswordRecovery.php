@@ -133,4 +133,16 @@ class PasswordRecovery extends BumActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+    
+    /**
+     * Update some datatime statistical fields.
+     */
+    public function beforeSave() {
+        if(!Yii::app()->getModule('bum')->db_triggers){
+            if($this->isNewRecord){
+                $this->date_of_request = new CDbExpression('NOW()');
+            }
+        }
+        return parent::beforeSave();
+    }    
 }
