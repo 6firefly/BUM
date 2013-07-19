@@ -191,13 +191,15 @@ class EmailsController extends BumController {
      * @return \YiiMailMessage
      */
     public function sendVerificationEmail($model){
+        $moduleSiteEmailsContact = SiteEmailsContent::model()->findByAttributes(array("name" => 'sender_registerNewEmail'));
+        
         $message = new YiiMailMessage;
         
-        $message->view = 'emailVerification';
-        $message->setBody(array('modelEmails'=>$model), 'text/html');
-        $message->subject = 'Email Verification';
+        $message->view = 'registerNewEmail';
+        $message->setBody(array('modelEmails'=>$model, 'moduleSiteEmailsContact' => $moduleSiteEmailsContact), 'text/html');
+        $message->subject = $moduleSiteEmailsContact->subject;
         $message->addTo($model->name);
-        $message->from = $this->module->notificationVerificationEmail;
+        $message->from = $this->module->sender_registerNewEmail;
         
         return $message;
     }

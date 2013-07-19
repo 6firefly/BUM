@@ -154,13 +154,15 @@ class InvitationsController extends BumController
      * @return \YiiMailMessage
      */
     public function sendInvitationEmail($model){
+        $moduleSiteEmailsContact = SiteEmailsContent::model()->findByAttributes(array("name" => 'sender_invitation'));
+        
         $message = new YiiMailMessage;
         
         $message->view = 'invitation';
-        $message->setBody(array('model'=>$model), 'text/html');
-        $message->subject = 'You had been invited ;)';
+        $message->setBody(array('model'=>$model, 'moduleSiteEmailsContact' => $moduleSiteEmailsContact), 'text/html');
+        $message->subject = $moduleSiteEmailsContact->subject;
         $message->addTo($model->email);
-        $message->from = $this->module->invitationEmail;
+        $message->from = $this->module->sender_invitation;
         
         return $message;
     }

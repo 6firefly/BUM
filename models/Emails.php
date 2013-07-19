@@ -54,7 +54,7 @@ class Emails extends BumActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-            array('name', 'email'),
+            //array('name', 'email'),
 			array('id_user, name', 'required'),
             array('verified, visible', 'boolean'),
             

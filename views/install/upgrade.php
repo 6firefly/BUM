@@ -45,4 +45,20 @@ $this->menu=array(
             ?></PRE></LI>
         </UL>
     </LI>
+    <LI <?php echo isset($_GET['v203_to_v204'])?"":"style='display:none;'"; ?>>
+        <UL>
+            <LI>MySQL:<BR/>
+                update_from_v2.03_to_v2.04.MySQL.sql <?php
+            $file = file_get_contents(__DIR__ . DIRECTORY_SEPARATOR .  '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'install' . DIRECTORY_SEPARATOR . 'update_from_v2.03_to_v2.04.MySQL.sql');
+            ?><PRE class="box"><?php
+                echo $file;
+            ?></PRE></LI>
+            <LI>PostgreSQL:<BR/>
+                update_from_v2.03_to_v2.04.postgre.sql <?php
+            $file = file_get_contents(__DIR__ . DIRECTORY_SEPARATOR .  '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'install' . DIRECTORY_SEPARATOR . 'update_from_v2.03_to_v2.04.postgre.sql');
+            ?><PRE class="box"><?php
+                echo $file;
+            ?></PRE></LI>
+        </UL>
+    </LI>
 </UL><?php

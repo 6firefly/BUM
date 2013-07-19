@@ -1,3 +1,12 @@
+/**
+ * JavaScript code necessary for managing invitations.
+ *
+ * @copyright	Copyright &copy; 2013 Hardalau Claudiu 
+ * @package		bum
+ * @license		New BSD License 
+ * 
+ */
+
 function invitationDialog(urlCreate, urlView){
     $.ajax({
       'url': urlCreate,

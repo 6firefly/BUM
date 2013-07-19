@@ -156,6 +156,9 @@ $this->menu=array(
                         </li>
                         <li>
                             settings_manage <SMALL>task</SMALL>
+                            <UL>
+                                <li>settings_emails_customization <SMALL>operation</SMALL></li>
+                            </UL>
                         </li>
                     </UL>
                 </li>

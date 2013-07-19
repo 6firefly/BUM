@@ -517,13 +517,15 @@ class UsersController extends BumController
      * @return \YiiMailMessage
      */
     public function sendPasswordRecoveryEmail($model){
+        $moduleSiteEmailsContact = SiteEmailsContent::model()->findByAttributes(array("name" => 'sender_passwordRecovery'));
+        
         $message = new YiiMailMessage;
         
         $message->view = 'passwordRecovery';
-        $message->setBody(array('modelPasswordRecovery'=>$model), 'text/html');
-        $message->subject = 'You requested a new password‏';
+        $message->setBody(array('modelPasswordRecovery'=>$model, 'moduleSiteEmailsContact' => $moduleSiteEmailsContact), 'text/html');
+        $message->subject = $moduleSiteEmailsContact->subject;
         $message->addTo($model->email);
-        $message->from = $this->module->passwordRecoveryEmail;
+        $message->from = $this->module->sender_passwordRecovery;
         
         return $message;
     }
@@ -620,13 +622,15 @@ class UsersController extends BumController
      * @return \YiiMailMessage
      */
     public function sendSignUpEmail($model){
+        $moduleSiteEmailsContact = SiteEmailsContent::model()->findByAttributes(array("name" => 'sender_signUp'));
+        
         $message = new YiiMailMessage;
         
         $message->view = 'signUpEmail';
-        $message->setBody(array('modelUsersData'=>$model), 'text/html');
-        $message->subject = 'activation email';
+        $message->setBody(array('modelUsersData'=>$model, 'moduleSiteEmailsContact' => $moduleSiteEmailsContact), 'text/html');
+        $message->subject = $moduleSiteEmailsContact->subject;
         $message->addTo($model->users->email);
-        $message->from = $this->module->notificationSignUpEmail;
+        $message->from = $this->module->sender_signUp;
         
         return $message;
     }

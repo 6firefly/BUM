@@ -62,8 +62,6 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
     ?><div id="AjaxLoader" style="display: none; margin: 0 auto; text-align: center;"><IMG src="<?php echo $this->module->assetsUrl; ?>/images/spinner.gif" width="60px" height="60px" /></div><?php
 $this->endWidget('zii.widgets.jui.CJuiDialog');
 
-?>
-
-<h1>Create Users</h1>
+?><h1>Create Users</h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model, 'modelUsersData'=>$modelUsersData)); ?>

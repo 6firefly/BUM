@@ -216,15 +216,24 @@ class InstallController extends BumController
                         'hasChildren' => true,
                         'children' => $operationTree);
                         
+                $operationTree = array();
+
+                if(!$auth->getAuthItem('settings_emails_customization')){
+                    $operation = $auth->createOperation('settings_emails_customization', 'Allow user to customize emais sent by this application.');
+                        $operationTree[] = array('text'=>"<B>{$operation->name}</B> operation <I>{$operation->description}</I>");
+                }
+                
                 if(!$auth->getAuthItem('settings_manage')){
                     $task = $auth->createTask('settings_manage', 'Allow the user to change the default settings.');
                 }else{
                      $task = $auth->getAuthItem('settings_manage');
                 }
+                if(!$task->hasChild('settings_emails_customization')) $task->addChild('settings_emails_customization');
                 
                 $taskTree[] = array(
                         'text' => "<B>{$task->name}</B> task <I>{$task->description}</I>", 
-                        'hasChildren' => false);
+                        'hasChildren' => true,
+                        'children' => $operationTree);
                 
                 if(!$auth->getAuthItem(BumDefaultInstallData::DEFAULT_ROLE_SUPER_ADMIN)){
                     $role = $auth->createRole(BumDefaultInstallData::DEFAULT_ROLE_SUPER_ADMIN, 'The most powerful admin!');

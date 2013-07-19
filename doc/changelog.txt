@@ -1,3 +1,5 @@
+2013-07-19
+    - add the possibility to customize email sent by this application (new button in settings area)
 2013-06-03
    - add a property that allows to update DATETIME statistical fields without the use of triggers;
    - minor BUG fix: please in all tables where TIMESTAMP is defined as not null, ALTER table to make it default as NULL, and no ATTRIBUTES of EXTRA... (DATETIME fields are used just for statistical reasons)

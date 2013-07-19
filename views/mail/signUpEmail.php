@@ -9,16 +9,7 @@
  * When a user register, this confirmation/activation email is sent to that user.
  */
 
-/* @var $modelUsersData modelUsersData */
+/* @var $modelUsersData model UsersData */
+/* @var $moduleSiteEmailsContact module SiteEmailsContact */
 
-$linkToActivationPage = CHtml::link('here', $this->createAbsoluteUrl('users/activate', array('acKey'=>$modelUsersData->activation_code)));
-
-?><p>In order to activate your account please press <?php echo $linkToActivationPage;
-
-
-
-if ($this->module->hoursActivationLinkIsActive > 0):
-    ?> <A href='#validTime'>*</A>!<p>
-    <p><SMALL><A id='validTime'>*</A>Your activation link is valid for a period of: <?php echo $this->module->hoursActivationLinkIsActive; ?> hours from the date when your account was created!<SMALL></p><?php
-endif;
-            
+echo eval($moduleSiteEmailsContact->body);

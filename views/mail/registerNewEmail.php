@@ -1,15 +1,16 @@
 <?php
 /**
- * Password recovery email view file; partial view.
+ * Email verification view file; partial view.
  *
  * @copyright	Copyright &copy; 2013 Hardalau Claudiu 
  * @package		bum
  * @license		New BSD License 
  * 
- * When a user request for password recovery (password reset) this email is sent to the user's email.
+ * When a user register a new email address, this verification email is sent in order to confirm newly added email.
  */
 
-/* @var $modelPasswordRecovery model PasswordRecovery */
+/* @var $modelEmails model Emails */
 /* @var $moduleSiteEmailsContact module SiteEmailsContact */
 
 echo eval($moduleSiteEmailsContact->body);
+            

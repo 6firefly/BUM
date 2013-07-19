@@ -31,7 +31,7 @@ class BumModule extends CWebModule
      * @var string
      * From whom the confirmation email is sent? (for sign up)
      */
-    public $notificationSignUpEmail = 'webmaster@localhost';
+    public $sender_signUp = 'webmaster@localhost';
     
 	/**
      * @var integer
@@ -68,7 +68,7 @@ class BumModule extends CWebModule
      * @var string
      * From where the invitation email is sent? (for invitations)
      */
-    public $invitationEmail = 'webmaster@localhost';
+    public $sender_invitation = 'webmaster@localhost';
     
 	/**
      * @var integer
@@ -81,7 +81,7 @@ class BumModule extends CWebModule
      * @var string
      * From where the verification email is sent? (for email verification)
      */
-    public $notificationVerificationEmail = 'webmaster@localhost';
+    public $sender_registerNewEmail = 'webmaster@localhost';
     
 	/**
      * @var boolean
@@ -99,7 +99,7 @@ class BumModule extends CWebModule
      * @var string
      * Password recovery email is sent from:
      */
-    public $passwordRecoveryEmail = 'webmaster@localhost';
+    public $sender_passwordRecovery = 'webmaster@localhost';
     
 	/**
      * @var integer
@@ -127,7 +127,10 @@ class BumModule extends CWebModule
     public function getAssetsUrl()
     {
         if ($this->_assetsUrl === null)
-            $this->_assetsUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('bum.assets') );
+            
+            $this->_assetsUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('bum.assets'));
+            //$this->_assetsUrl = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('bum.assets'), false, -1, true ); // this line is used for debuging JavaScript code saved in assets.
+        
         return $this->_assetsUrl;
     }
     

@@ -14,8 +14,16 @@ $this->breadcrumbs=array(
 	'Settings',
 );
 
+
+$cs = Yii::app()->getClientScript();
+$cs->registerCssFile($this->module->assetsUrl . '/css/customizeEmails.css');
+
 $cs = Yii::app()->getClientScript();
 $cs->registerScriptFile($this->module->assetsUrl . '/js/invitations.js');
+
+$cs = Yii::app()->getClientScript();
+$cs->registerScriptFile($this->module->assetsUrl . '/js/customizeEmails.js');
+
   
 $this->menu=array(    
 	array('label'=>'Install', 'url'=>array('install/index'), 'visible'=>($this->module->install)),
@@ -62,8 +70,9 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 ?><div class="form">
     <?php echo CHtml::beginForm(); ?>
         <TABLE>
-            <TR><TH></TH><TH>Value</TH></TR>
-            <?php foreach($settings as $i=>$setting): 
+            <TR><TH></TH><TH>Value</TH></TR><?php 
+            
+            foreach($settings as $i=>$setting): 
                 switch ($setting->name){
                     case 'logInIfNotVerified':
                             ?><TR>
@@ -80,6 +89,8 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                                     echo CHtml::openTag("SPAN", array("name"=>"Settings[$i]description")); 
                                     echo $setting->description; 
                                     echo CHtml::closeTag("SPAN");
+                                    
+                                    echo '<HR/>';
                             ?></TD></TR><?php
                         break;
                     case 'invitationBasedSignUp':
@@ -97,6 +108,8 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                                     echo CHtml::openTag("SPAN", array("name"=>"Settings[$i]description")); 
                                     echo $setting->description; 
                                     echo CHtml::closeTag("SPAN");
+                                    
+                                    echo '<HR/>';
                             ?></TD></TR><?php
                         break;
                     case 'invitationButtonDisplay':
@@ -114,6 +127,8 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                                     echo CHtml::openTag("SPAN", array("name"=>"Settings[$i]description")); 
                                     echo $setting->description; 
                                     echo CHtml::closeTag("SPAN");
+                                    
+                                    echo '<HR/>';
                             ?></TD></TR><?php
                         break;
                     case 'enabledSignUp':
@@ -131,6 +146,8 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                                     echo CHtml::openTag("SPAN", array("name"=>"Settings[$i]description")); 
                                     echo $setting->description; 
                                     echo CHtml::closeTag("SPAN");
+                                    
+                                    echo '<HR/>';
                             ?></TD></TR><?php
                         break;
                     case 'trackPasswordRecoveryRequests':
@@ -148,6 +165,36 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                                     echo CHtml::openTag("SPAN", array("name"=>"Settings[$i]description")); 
                                     echo $setting->description; 
                                     echo CHtml::closeTag("SPAN");
+                                    
+                                    echo '<HR/>';
+                            ?></TD></TR><?php
+                        break;
+                    
+                    case 'sender_invitation':
+                    case 'sender_signUp':
+                    case 'sender_registerNewEmail':
+                    case 'sender_passwordRecovery':
+                            ?><TR>
+                                <TD><?php 
+                                    echo CHtml::activeHiddenField($setting, "[$i]name");
+                                    echo CHtml::activeHiddenField($setting, "[$i]label");
+                                    echo CHtml::label($setting->label,"Settings[$i]value"); 
+                                ?></TD>
+                                <TD><?php 
+                                    echo CHtml::activeTextField($setting,"[$i]value", array('size'=>45,'maxlength'=>45)); 
+                                    if(Yii::app()->user->checkAccess('settings_emails_customization')){
+                                        echo CHtml::button("customize email", array('onclick'=>'customizeEmailsDialog(
+                                            "' . Yii::app()->createUrl($this->module->name . "/siteEmailsContent/AJAXUpdate", array('name'=>$setting->name)) . '"
+                                        );'));
+                                    }
+                                ?></TD>
+                            </TR><?php
+                            ?><TR><TD colspan="2"><?php 
+                                    echo CHtml::openTag("SPAN", array("name"=>"Settings[$i]description")); 
+                                    echo $setting->description; 
+                                    echo CHtml::closeTag("SPAN");
+                                    
+                                    echo '<HR/>';
                             ?></TD></TR><?php
                         break;
                     default:
@@ -165,6 +212,8 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                                     echo CHtml::openTag("SPAN", array("name"=>"Settings[$i]description")); 
                                     echo $setting->description; 
                                     echo CHtml::closeTag("SPAN");
+                                    
+                                    echo '<HR/>';
                             ?></TD></TR><?php
                         break;
                 }
@@ -173,4 +222,16 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 
         <?php echo CHtml::submitButton('Save'); ?>
     <?php echo CHtml::endForm(); ?>
-</div><!-- form -->
+</div><!-- form --><?php
+
+/* Send an invitation dialog box */
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array(
+    'id'=>'customize_email',
+    'options'=>array(
+        'autoOpen'=>false,
+        'modal'=>true,
+    )
+));
+    ?><div id="AjaxLoader_costomize_email" style="display: none; margin: 0 auto; text-align: center;"><IMG src="<?php echo $this->module->assetsUrl; ?>/images/spinner.gif" width="60px" height="60px" /></div><?php
+    ?><DIV id="dlg_customize_email"></DIV><?php
+$this->endWidget('zii.widgets.jui.CJuiDialog');

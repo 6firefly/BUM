@@ -53,7 +53,7 @@ $this->menu=array(
         </DIV>
     </LI>
     
-    <LI>
+    <!--<LI>
         How customize automatically sent email by BUM module:<br/>
         check path: bum/views/mail/
 
@@ -68,6 +68,6 @@ $this->menu=array(
                 <dd>When a user register, this confirmation/activation email is sent to that user.</dd>
         </dl>
         
-    </LI>
+    </LI>-->
             
 </UL>
