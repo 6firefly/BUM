@@ -407,5 +407,26 @@ return $body_;
         );
         self::initSetting($module, $setting);
         ///////////////////////////////
+        //
+        // init facebook appId
+        $setting = array(
+            'name' => 'fb_appId',
+            'label' => 'Facebook App ID',
+            'description' => '',
+            'setting_order' => 1400,
+            'version' => 1,
+        );
+        self::initSetting($module, $setting);
+        
+        // init facebook secret
+        $setting = array(
+            'name' => 'fb_secret',
+            'label' => 'Facebook secret',
+            'description' => '',
+            'setting_order' => 1400,
+            'version' => 1,
+        );
+        self::initSetting($module, $setting);
+        ///////////////////////////////
     }
 }

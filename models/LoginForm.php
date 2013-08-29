@@ -53,14 +53,47 @@ class LoginForm extends CFormModel
 	 */
 	public function authenticate($attribute,$params)
 	{
-		if(!$this->hasErrors())
-		{
+		if(!$this->hasErrors()){
+            
 			$this->_identity=new BumUserIdentity($this->username,$this->password);
-			if(!$this->_identity->authenticate())
-				$this->addError('password','Incorrect username or password.');
+			if(!$this->_identity->authenticate()){
+                switch($this->_identity->errorCode){
+                    case BumUserIdentity::ERROR_USER_NOT_ACTIVE:
+                        $this->addError('username','Please activate your account! ' . CHtml::link('Resend confirmation email!', array('users/resendSignUpConfirmationEmail')) . '' );
+                        break;
+                    default:
+                        $this->addError('password','Incorrect username or password.');
+                        break;
+                }
+            }
 		}
 	}
 
+	/**
+	 * Logs in the user using the given provider id
+	 * @return boolean whether login is successful
+	 */
+	public function socialLogin($social)
+	{
+		if($this->_identity===null)
+		{
+			$this->_identity=new BumUserIdentity($social);
+			$this->_identity->socialAuthenticate();
+		}
+		if($this->_identity->errorCode===BumUserIdentity::ERROR_NONE)
+		{
+			$duration=$this->rememberMe ? 3600*24*30 : 0; // 30 days
+			Yii::app()->user->login($this->_identity,$duration);
+            
+            // update user last login time
+            Users::model()->updateByPk($this->_identity->id, array('date_of_last_access' => new CDbExpression('NOW()')));
+            
+			return true;
+		}
+		else{
+			return false;
+        }
+	}
 	/**
 	 * Logs in the user using the given username and password in the model.
 	 * @return boolean whether login is successful

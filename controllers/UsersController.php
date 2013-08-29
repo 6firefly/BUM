@@ -3,7 +3,7 @@
  * UsersController class file.
  * Controller class file for table users.
  *
- * @copyright	Copyright &copy; 2012 Hardalau Claudiu 
+ * @copyright	Copyright &copy; 2013 Hardalau Claudiu 
  * @package		bum
  * @license		New BSD License 
  */
@@ -55,7 +55,7 @@ class UsersController extends BumController
         //complete the running of other filters and execute the requested action
         $filterChain->run();
     }
-    
+
 
 	/**
 	 * Specifies the access control rules.
@@ -70,7 +70,7 @@ class UsersController extends BumController
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform certain actions; some actions may require even more rights
-				'actions'=>array('viewMyPrivateProfile', 'viewProfile', 'update', 'viewAllUsers','admin','delete','create'),
+				'actions'=>array('viewMyPrivateProfile', 'viewProfile', 'update', 'socialUpdate', 'viewAllUsers','admin','delete','create'),
 				'users'=>array('@'),
 			),
 			array('deny',  // deny all users
@@ -99,25 +99,77 @@ class UsersController extends BumController
 	 */
 	public function actionLogIn()
 	{
-		$model = new LoginForm;
+        if(Yii::app()->user->isGuest){
+            $model = new LoginForm;
 
-		// if it is ajax validation request
-		if(isset($_POST['ajax']) && $_POST['ajax']==='login-form')
-		{
-			echo CActiveForm::validate($model);
-			Yii::app()->end();
-		}
+            // if it is ajax validation request
+            if(isset($_POST['ajax']) && $_POST['ajax']==='login-form')
+            {
+                echo CActiveForm::validate($model);
+                Yii::app()->end();
+            }
 
-		// collect user input data
-		if(isset($_POST['LoginForm']))
-		{
-			$model->attributes=$_POST['LoginForm'];
-			// validate user input and redirect to the previous page if valid
-			if($model->validate() && $model->login())
-				$this->redirect(Yii::app()->user->returnUrl);
-		}
-		// display the login form
-		$this->render('login',array('model'=>$model));
+            // check to see if user is logged in using facebook account
+            $facebook = new facebook(array(
+              'appId'  => $this->module->fb_appId,
+              'secret' => $this->module->fb_secret,
+            ));
+
+            // Get User ID
+            $fb_user = $facebook->getUser();
+            if($fb_user){
+
+                // then the user is logged by using facebook account; authenticate user
+                // $model->socialLogin('facebook');
+                // 
+                // echo 'You are logged in with your facebook account! ';
+                // echo CHtml::link('logout', Yii::app()->createUrl('site/logout'));
+                // Yii::app()->end();
+
+                $social = array(
+                    'provider' => 'facebook',
+                    'user_id' => $fb_user,
+                );
+                if($model->socialLogin($social)){
+                        if(Yii::app()->user->status == Users::STATUS_ONLY_FACEBOOK){
+                            $this->redirect(Yii::app()->createUrl('bum/users/socialUpdate', array('id' => Yii::app()->user->id)));            
+                        }else{
+                            $this->redirect(Yii::app()->user->returnUrl);            
+                        }
+                }
+            }else{
+                // collect user input data
+                if(isset($_POST['LoginForm']))
+                {
+                    $model->attributes=$_POST['LoginForm'];
+                    // validate user input and redirect to the previous page if valid
+                    if($model->validate() && $model->login())
+                        $this->redirect(Yii::app()->user->returnUrl);
+                }
+            }
+            // display the login form
+            $this->render('login',array('model'=>$model));
+        }else{        
+            // check to see if user is logged in using facebook account
+            $facebook = new facebook(array(
+              'appId'  => $this->module->fb_appId,
+              'secret' => $this->module->fb_secret,
+            ));
+            // Get User ID
+            $fb_user = $facebook->getUser();
+            if($fb_user){
+                $usersData=UsersData::model()->findByPk(Yii::app()->user->id);
+                if(is_null($usersData->facebook_user_id)){
+                    $usersData->facebook_user_id = $fb_user;
+                    $usersData->save(); //should work
+                    
+                    $this->redirect(Yii::app()->user->returnUrl);
+                    Yii::app()->end();
+                }
+            }
+            
+    		$this->redirect(Yii::app()->homeUrl);
+        }
 	}
 
 	/**
@@ -223,7 +275,7 @@ class UsersController extends BumController
 	{
 		// every user has the right to update its own profile...
         // beside, the users with the right "users_profile_update" also has the right to update other users profile...
-        if( (Yii::app()->user->id === $id) || Yii::app()->user->checkAccess('users_profile_update')){
+        if( ((Yii::app()->user->id === $id) || Yii::app()->user->checkAccess('users_profile_update')) && !in_array(Yii::app()->user->status, Users::getSocialOnlyStatuses())){
             $model=$this->loadModel($id);
             $modelUsersData=UsersData::model()->findByPk($id);
                         
@@ -249,6 +301,64 @@ class UsersController extends BumController
                     
                     if($model->save()){
                         if($modelUsersData->save()){
+                            $this->redirect(array('viewMyPrivateProfile','id'=>$model->id));
+                        }
+                    }
+                }
+            }
+
+            $this->render('update',array(
+                'model'=>$model,
+                'modelUsersData'=>$modelUsersData,
+                'myEmails'=> BumUserEmails::findMyEmails($model->id), 
+                'hasUnverifiedEmails'=>  Emails::hasUnverifiedEmails($model->id),
+            ));
+        }else{
+            $this->redirect(array('viewMyPrivateProfile','id'=>$id));
+        }
+	}
+
+	/**
+	 * Updates a particular model.
+	 * If update is successful, the browser will be redirected to the 'view' page.
+	 * @param integer $id the ID of the model to be updated
+	 */
+	public function actionSocialUpdate($id)
+	{
+		// every user has the right to update its own profile...
+        // beside, the users with the right "users_profile_update" also has the right to update other users profile...
+        if( ((Yii::app()->user->id === $id) || Yii::app()->user->checkAccess('users_profile_update')) && in_array(Yii::app()->user->status, Users::getSocialOnlyStatuses()) ){
+            $model=$this->loadModel($id);
+            $model->user_name = ''; // because user name is automatically generated by app.; so do not display that user name;
+            $model->email = '';  // because email is automatically generated by app.; so do not display that email;
+            $modelUsersData=UsersData::model()->findByPk($id);
+                        
+            $model->scenario = 'socialUpdate';
+
+            // Uncomment the following line if AJAX validation is needed
+            // $this->performAjaxValidation($model);
+
+            if(isset($_POST['Users']))
+            {
+                
+                if( (Yii::app()->user->id === $id && isset($_POST['Users']['status']) && (int)$_POST['Users']['status']<0)){
+                    $_POST['Users']['status'] = $model->status; // set the new statu to the preview status...
+                    Yii::app()->user->setFlash('error', "You can not block your own account!");
+                }
+                    
+                $model->attributes=$_POST['Users'];
+
+                // if isset($_POST['Users']) is true, this should be also true...
+                if(isset($_POST['UsersData'])){
+                    $modelUsersData->attributes=$_POST['UsersData'];            
+                    $modelUsersData->validate(); // in order to print errors for this model as well
+                    
+                    if($model->save()){
+                        if($modelUsersData->save()){
+                            // the profile has been updated
+                            $model->status = Users::STATUS_NORMAL;
+                            $model->save();
+                            
                             $this->redirect(array('viewMyPrivateProfile','id'=>$model->id));
                         }
                     }

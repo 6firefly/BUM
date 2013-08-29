@@ -130,7 +130,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
         ),
 		array(
 			'class'=>'CButtonColumn',
-            'viewButtonUrl'=>'$this->grid->controller->createUrl("users/viewMyPrivateProfile", array("id" => $data["id"]))',
+            'viewButtonUrl'=>'$this->grid->controller->createUrl("users/viewProfile", array("id" => $data["id"]))',
 		),
 	),
 )); ?>

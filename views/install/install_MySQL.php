@@ -34,7 +34,7 @@ $this->menu=array(
             Create a database, then run the sql scripts.<BR/>
             The sql script can be found in:<BR/>
             <UL>
-                <LI><?php echo CHtml::link("bum/install/install.v2.03.MySQL.sql", $this->createUrl("install/MySQL_scripts"), array("target"=>"_blank")); ?></LI>
+                <LI><?php echo CHtml::link("bum/install/install.v2.04.MySQL.sql", $this->createUrl("install/MySQL_scripts"), array("target"=>"_blank")); ?></LI>
                 <LI><A href="https://code.google.com/p/yii/source/browse/trunk/framework/web/auth/schema-mysql.sql?r=3293" target="_blank">framework/web/auth/schema-mysql.sql</A>.</LI>
             </UL>
             <BR/>

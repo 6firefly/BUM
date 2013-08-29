@@ -52,6 +52,7 @@ class Users extends BumActiveRecord
     CONST STATUS_BANNED=-10;
     CONST STATUS_NORMAL=0;
     CONST STATUS_SPECIAL=10;
+    CONST STATUS_ONLY_FACEBOOK=50;
     CONST STATUS_ATTENTION=100;
         
     /**
@@ -88,7 +89,19 @@ class Users extends BumActiveRecord
             self::STATUS_BANNED => 'Banned',
             self::STATUS_NORMAL => 'Normal',
             self::STATUS_SPECIAL => 'Special',
+            self::STATUS_ONLY_FACEBOOK => 'Facebook only',
             self::STATUS_ATTENTION => 'Attention!',
+        );
+    }
+    
+    /**
+     * Get the active status
+     * @return type 
+     */
+    public static function getSocialOnlyStatuses()
+    {
+        return array(
+            self::STATUS_ONLY_FACEBOOK,
         );
     }
     
@@ -137,7 +150,7 @@ class Users extends BumActiveRecord
             array('status', 'type', 'type'=>'integer'),
 			// verifyCode needs to be entered correctly
 			array('verifyCode', 'captcha', 'allowEmpty'=>!CCaptcha::checkRequirements(), 'on'=>'captchaRequired, signUp'), // see: http://www.yiiframework.com/forum/index.php/topic/21561-captcha-custom-validation/ for information
-            array('password', 'required', 'on'=>'signUp, create, passwordReset'),
+            array('password', 'required', 'on'=>'signUp, create, passwordReset, socialUpdate'),
             array('password_old', 'checkOldPassword', 'dependentAttribute'=>'password', 'on'=>'update'),
             
 			array('user_name, email', 'required'),

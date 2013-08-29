@@ -197,6 +197,30 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                                     echo '<HR/>';
                             ?></TD></TR><?php
                         break;
+                    case 'fb_appId':
+                    case 'fb_secret':
+                            ?><TR>
+                                <TD><?php 
+                                    echo CHtml::activeHiddenField($setting, "[$i]name");
+                                    echo CHtml::activeHiddenField($setting, "[$i]label");
+                                    echo CHtml::label($setting->label,"Settings[$i]value"); 
+                                ?></TD>
+                                <TD><?php 
+                                    if(Yii::app()->getModule('bum')->demoMode){
+                                        echo 'Demo mode is active! You are not allowed to see or edit this field!';
+                                    }else{
+                                        echo CHtml::activeTextField($setting,"[$i]value", array('size'=>45,'maxlength'=>45)); 
+                                    }
+                                ?></TD>
+                            </TR><?php
+                            ?><TR><TD colspan="2"><?php 
+                                    echo CHtml::openTag("SPAN", array("name"=>"Settings[$i]description")); 
+                                    echo $setting->description; 
+                                    echo CHtml::closeTag("SPAN");
+                                    
+                                    echo '<HR/>';
+                            ?></TD></TR><?php
+                        break;    
                     default:
                             ?><TR>
                                 <TD><?php 

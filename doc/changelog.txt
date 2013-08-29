@@ -1,3 +1,7 @@
+2013-08-29
+   - main update: add FACEBOOK login button
+   - other small updates...
+
 2013-07-19
     - add the possibility to customize email sent by this application (new button in settings area)
 2013-06-03

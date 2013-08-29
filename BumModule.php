@@ -109,9 +109,23 @@ class BumModule extends CWebModule
     
 	/**
      * @var boolean
-        * If it's true, than if a password recovery request expire, it is not deleted, but it's property "expired" is set to true. So in the database remain all password requests that have been made.
+     * If it's true, than if a password recovery request expire, it is not deleted, but it's property "expired" is set to true. So in the database remain all password requests that have been made.
      */
     public $trackPasswordRecoveryRequests = false;
+    
+    /* ~~~~~~~~~~~~ FACEBOOK ~~~~~~~~~~~~ */
+	/**
+     * @var string
+     * Facebook App. ID
+     */
+    public $fb_appId = '***';
+    
+	/**
+     * @var string
+     * Facebook secret
+     */
+    public $fb_secret = '***';
+    /* ~~~~~~~~~~~~ END FACEBOOK ~~~~~~~~~~~~ */
     
     /**
      * @var bool
@@ -143,6 +157,9 @@ class BumModule extends CWebModule
 		$this->setImport(array(
 			'bum.models.*',
 			'bum.components.*',
+            
+			'bum.extensions.logIn.*',
+			'bum.components.facebook-php-sdk-master.src.*', // include the facebook-php-sdk
 		));
         
         if (!Yii::app()->hasComponent('mail') || get_class(Yii::app()->getComponent('mail')) != "YiiMail") {

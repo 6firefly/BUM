@@ -2,7 +2,7 @@
 /**
  * View my public profile.
  *
- * @copyright	Copyright &copy; 2012 Hardalau Claudiu 
+ * @copyright	Copyright &copy; 2013 Hardalau Claudiu 
  * @package		bum
  * @license		New BSD License
  *  
@@ -14,7 +14,7 @@
 
 $this->breadcrumbs=array(
 	'Users'=>(Yii::app()->user->checkAccess("users_admin")?array('admin'):""),
-	$model->user_name,
+	Yii::app()->user->name,
     'Public Profile',
 );
 
@@ -36,7 +36,9 @@ $this->menu=array(
         array('label'=>'View Profile', 'url'=>array('users/viewProfile', 'id'=>$model->id), 'visible'=>!Yii::app()->user->isGuest),
         array('label'=>'View Private Profile', 'url'=>array('users/viewMyPrivateProfile', 'id'=>$model->id), 'visible'=>((Yii::app()->user->id === $model->id) || Yii::app()->user->checkAccess('users_all_privateProfile_view'))),
 
-        array('label'=>'Update Profile Information', 'url'=>array('users/update', 'id'=>$model->id), 'visible'=>((Yii::app()->user->id === $model->id) || Yii::app()->user->checkAccess('users_profile_update')), 'active'=>true),
+        array('label'=>'Update Profile Information', 'url'=>array('users/update', 'id'=>$model->id), 'visible'=>(((Yii::app()->user->id === $model->id) || Yii::app()->user->checkAccess('users_profile_update')) && !in_array(Yii::app()->user->status, Users::getSocialOnlyStatuses())), 'active'=>true),
+        array('label'=>'Update Profile Information', 'url'=>array('users/socialUpdate', 'id'=>$model->id), 'visible'=>(((Yii::app()->user->id === $model->id) || Yii::app()->user->checkAccess('users_profile_update')) && in_array(Yii::app()->user->status, Users::getSocialOnlyStatuses())), 'active'=>true),
+        
         array('label'=>'Delete', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?'), 'visible'=>Yii::app()->user->checkAccess("users_delete")),
     ), 'submenuOptions'=>array('style'=>'padding:0 0 0 15px;'), 'visible'=>!Yii::app()->user->isGuest),
     
@@ -119,9 +121,9 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 
 <div class="view">
 
-    <H2>
-        <?php echo CHtml::link(CHtml::encode($model->user_name), array('viewMyPrivateProfile', 'id'=>$model->id)); ?>
-    </H2>
+    <?php if (!in_array($model->status, Users::getSocialOnlyStatuses())): ?>
+        <H2><?php echo CHtml::link(CHtml::encode($model->user_name), array('viewMyPrivateProfile', 'id'=>$model->id)); ?></H2>
+    <?php endif; ?>
 
     <SECTION>
         <?php echo CHtml::encode($model->usersData->getAttributeLabel('desctiption')); ?>:

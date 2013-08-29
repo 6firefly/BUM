@@ -2,7 +2,7 @@
 /**
  * View my private profile.
  *
- * @copyright	Copyright &copy; 2012 Hardalau Claudiu 
+ * @copyright	Copyright &copy; 2013 Hardalau Claudiu 
  * @package		bum
  * @license		New BSD License 
  *  
@@ -15,7 +15,7 @@
 
 $this->breadcrumbs=array(
 	'Users'=>(Yii::app()->user->checkAccess("users_admin")?array('admin'):""),
-	$model->user_name,
+	Yii::app()->user->name,
     'Private Profile',
 );
 
@@ -37,7 +37,9 @@ $this->menu=array(
         array('label'=>'View Profile', 'url'=>array('users/viewProfile', 'id'=>$model->id), 'visible'=>!Yii::app()->user->isGuest),
         array('label'=>'View Private Profile', 'url'=>array('users/viewMyPrivateProfile', 'id'=>$model->id), 'visible'=>((Yii::app()->user->id === $model->id) || Yii::app()->user->checkAccess('users_all_privateProfile_view'))),
 
-        array('label'=>'Update Profile Information', 'url'=>array('users/update', 'id'=>$model->id), 'visible'=>((Yii::app()->user->id === $model->id) || Yii::app()->user->checkAccess('users_profile_update')), 'active'=>true),
+        array('label'=>'Update Profile Information', 'url'=>array('users/update', 'id'=>$model->id), 'visible'=>(((Yii::app()->user->id === $model->id) || Yii::app()->user->checkAccess('users_profile_update')) && !in_array(Yii::app()->user->status, Users::getSocialOnlyStatuses())), 'active'=>true),
+        array('label'=>'Update Profile Information', 'url'=>array('users/socialUpdate', 'id'=>$model->id), 'visible'=>(((Yii::app()->user->id === $model->id) || Yii::app()->user->checkAccess('users_profile_update')) && in_array(Yii::app()->user->status, Users::getSocialOnlyStatuses())), 'active'=>true),
+        
         array('label'=>'Delete', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?'), 'visible'=>Yii::app()->user->checkAccess("users_delete")),
     ), 'submenuOptions'=>array('style'=>'padding:0 0 0 15px;')),
     
@@ -80,9 +82,9 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 
 <div class="view">
     
-    <H2>
-        <?php echo CHtml::link(CHtml::encode($model->user_name), array('viewMyPrivateProfile', 'id'=>$model->id)); ?>
-    </H2>
+    <?php if (!in_array($model->status, Users::getSocialOnlyStatuses())): ?>
+        <H2><?php echo CHtml::link(CHtml::encode($model->user_name), array('viewMyPrivateProfile', 'id'=>$model->id)); ?></H2>
+    <?php endif; ?>
 
     <H3>
         <?php echo CHtml::encode($model->name); ?>
@@ -98,24 +100,26 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
         <?php endif; ?>
 	</H4>
         
-    <SECTION>
-        <?php if((Yii::app()->user->id === $model->id) || Yii::app()->user->checkAccess('emails_all_view')): ?>
-            <H5>
-                <?php echo CHtml::encode($model->getAttributeLabel('email')); ?>:
-                <B><?php echo CHtml::encode($model->email); ?></B><?php
+    <?php if (!in_array($model->status, Users::getSocialOnlyStatuses())): ?>
+        <SECTION>
+            <?php if((Yii::app()->user->id === $model->id) || Yii::app()->user->checkAccess('emails_all_view')): ?>
+                <H5>
+                    <?php echo CHtml::encode($model->getAttributeLabel('email')); ?>:
+                    <B><?php echo CHtml::encode($model->email); ?></B><?php
 
-                $myEmails=BumUserEmails::findMyEmails($model->id);
-                if($myEmails->itemCount>0):
-                    ?><SMALL><DIV>Secondary email(s):<?php 
+                    $myEmails=BumUserEmails::findMyEmails($model->id);
+                    if($myEmails->itemCount>0):
+                        ?><SMALL><DIV>Secondary email(s):<?php 
 
 
-                        echo $this->renderPartial('/emails/_viewMyEmails', array(
-                           'myEmails'=>$myEmails,
-                    )); ?></DIV></SMALL><?php
-                endif;
-            ?></H5>
-        <?php endif; ?>
-    </SECTION>
+                            echo $this->renderPartial('/emails/_viewMyEmails', array(
+                               'myEmails'=>$myEmails,
+                        )); ?></DIV></SMALL><?php
+                    endif;
+                ?></H5>
+            <?php endif; ?>
+        </SECTION>
+    <?php endif; ?>
 
     <SECTION>
         <?php echo CHtml::encode($model->usersData->getAttributeLabel('desctiption')); ?>:

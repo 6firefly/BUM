@@ -2,7 +2,7 @@
 /**
  * Create a new user; partial view.
  *
- * @copyright	Copyright &copy; 2012 Hardalau Claudiu 
+ * @copyright	Copyright &copy; 2013 Hardalau Claudiu 
  * @package		bum
  * @license		New BSD License 
  * 
@@ -33,12 +33,28 @@
 
                 echo $form->labelEx($model,'user_name'); 
 
-                if($model->scenario == 'create' || $model->scenario == 'signUp'): 
+                if($model->scenario == 'create' || $model->scenario == 'signUp' || $model->scenario == 'socialUpdate'): 
                     // only allow this field to be edited if it's in create or signUp scenario...
                     echo $form->textField($model,'user_name',array('size'=>45,'maxlength'=>45));
                 else:
                     // primary email can be changed; just set as primary on of other emails associated with this user
                     echo $form->textField($model,'user_name',array('size'=>45,'maxlength'=>45, 'readonly'=>'readonly', 'disabled'=>true));
+                
+                    echo '&nbsp;&nbsp;';
+                
+                    if(!Yii::app()->getModule('bum')->demoMode){
+                        if(is_null($modelUsersData->facebook_user_id)){
+                            $this->widget('facebook_app', array(
+                                'appId'=>Yii::app()->getModule('bum')->fb_appId,
+                                'secret'=>Yii::app()->getModule('bum')->fb_secret,
+                                'text'=>'Enable sign in with <b>Facebook</b>',
+                                'target'=>'_self',
+                            ));
+                        }else{
+                            echo 'Facebook login enabled';
+                        }
+                    }
+                    
                 endif;
 
                 echo $form->error($model,'user_name'); 
@@ -47,7 +63,7 @@
             <div class="row"><?php 
                 echo $form->labelEx($model,'email');
 
-                if($model->scenario == 'create' || $model->scenario == 'signUp'): 
+                if($model->scenario == 'create' || $model->scenario == 'signUp' || $model->scenario == 'socialUpdate'): 
                     ?><DIV class="span-10"><?php 
                         echo $form->textField($model,'email',array('size'=>60,'maxlength'=>60)); 
                     ?></DIV><?php 
@@ -61,6 +77,7 @@
                             if($model->scenario == 'update' && $myEmails):
                                 echo CHtml::AjaxLink('new email address', array("emails/create", 'id_user'=>$model->id), array('update'=>'#addEmail'), array('class'=>'displayInline' . (($hasUnverifiedEmails)?' hide':''), 'id'=>'CreateNewEmailButton', 'live'=>false));
                             endif;
+                            
                         ?></DIV><?php
                     endif;
 
@@ -70,7 +87,7 @@
 
             ?></div><?php 
 
-            if($model->scenario == 'create' || $model->scenario == 'signUp'): 
+            if($model->scenario == 'create' || $model->scenario == 'signUp' || $model->scenario == 'socialUpdate'): 
             else: 
                 ?><DIV id="emails" class="span-15 last">
                     <DIV id="addEmail"></DIV>
@@ -159,7 +176,7 @@
             <div class="row"><?php 
                 echo $form->labelEx($modelUsersData,'facebook_address'); 
                 echo $form->textField($modelUsersData,'facebook_address',array('size'=>60,'maxlength'=>60)); 
-                echo $form->error($modelUsersData,'facebook_address'); 
+                echo $form->error($modelUsersData,'facebook_address');                  
             ?></div>
 
             <div class="row"><?php 

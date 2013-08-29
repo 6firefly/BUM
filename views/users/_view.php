@@ -14,11 +14,11 @@
 <div class="view">
 
     <H2>
-        <?php echo CHtml::link(CHtml::encode($data->user_name), array('viewMyPrivateProfile', 'id'=>$data->id)); ?>
+        <?php echo CHtml::link(CHtml::encode($data->user_name), array('viewProfile', 'id'=>$data->id)); ?>
     
         <SMALL>
             (<b><?php echo CHtml::encode($data->getAttributeLabel('id')); ?>:</b>
-            <?php echo CHtml::link(CHtml::encode($data->id), array('viewMyPrivateProfile', 'id'=>$data->id)); ?>)
+            <?php echo CHtml::link(CHtml::encode($data->id), array('viewProfile', 'id'=>$data->id)); ?>)
         </SMALL>
     </H2>
 
