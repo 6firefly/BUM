@@ -61,4 +61,20 @@ $this->menu=array(
             ?></PRE></LI>
         </UL>
     </LI>
+    <LI <?php echo isset($_GET['v2_to_v3'])?"":"style='display:none;'"; ?>>
+        <UL>
+            <LI>MySQL:<BR/>
+                update_from_v2_to_v3.MySQL.sql <?php
+            $file = file_get_contents(__DIR__ . DIRECTORY_SEPARATOR .  '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'install' . DIRECTORY_SEPARATOR . 'update_from_v2_to_v3.MySQL.sql');
+            ?><PRE class="box"><?php
+                echo $file;
+            ?></PRE></LI>
+            <LI>PostgreSQL:<BR/>
+                update_from_v2_to_v3.postgre.sql <?php
+            $file = file_get_contents(__DIR__ . DIRECTORY_SEPARATOR .  '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'install' . DIRECTORY_SEPARATOR . 'update_from_v2_to_v3.postgre.sql');
+            ?><PRE class="box"><?php
+                echo $file;
+            ?></PRE></LI>
+        </UL>
+    </LI>
 </UL><?php

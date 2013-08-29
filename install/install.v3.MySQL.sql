@@ -89,6 +89,7 @@ CREATE  TABLE IF NOT EXISTS users_data (
   obs TEXT NULL,
   site VARCHAR(1500) NULL ,
   facebook_address VARCHAR(60) NULL,
+  facebook_user_id BIGINT UNSIGNED,
   twitter_address VARCHAR(60) NULL,
   activation_code VARCHAR(45) NULL,
   date_of_update TIMESTAMP NULL,
