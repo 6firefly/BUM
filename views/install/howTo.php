@@ -52,6 +52,20 @@ $this->menu=array(
             Yii::app()->user->statusText;
         </DIV>
     </LI>
+    <LI>
+        In <?php echo CHtml::link('settings', array('settings/batchUpdate')); ?> you may add your Facebook App ID and Facebook secret in order to enable fecebook logIn.
+    </LI>
+    <LI>
+        How to include facebook logIn button:
+        <DIV class="box">
+           $this->widget('facebook_app', array(<BR/>
+           &nbsp;&nbsp;&nbsp; 'appId'=>Yii::app()->getModule('bum')->fb_appId,<BR/>
+           &nbsp;&nbsp;&nbsp; 'secret'=>Yii::app()->getModule('bum')->fb_secret,<BR/>
+           &nbsp;&nbsp;&nbsp; 'text'=>'Sign in with &lt;B&gt;Facebook&lt;/B&gt;',<BR/>
+           &nbsp;&nbsp;&nbsp; 'target'=>'_self',<BR/>
+           ));<BR/>
+        </DIV>
+    </LI>
     
     <!--<LI>
         How customize automatically sent email by BUM module:<br/>
