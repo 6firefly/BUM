@@ -18,9 +18,10 @@ What BUM has to offer:
  - customize some settings (like: allow users to log in if they are not active; is signUp enabled; customise invitation email .... );
  - password reset syste;
  - resend activation link;
- - associate many emails to an user aaccount (with email verification);
+ - associate many emails to an user account (with email verification);
  
- http://bum.infoprofessional.ro
+
+http://bum.infoprofessional.ro
  user: admin
  password: admin 
    - to test the admin interface
