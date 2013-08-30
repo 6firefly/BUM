@@ -22,6 +22,7 @@ What BUM has to offer:
  
 
 http://bum.infoprofessional.ro
+
  user: admin
  password: admin 
    - to test the admin interface
@@ -30,6 +31,7 @@ http://bum.infoprofessional.ro
    - for a regular user
    
 http://social-test.infoprofessional.ro
+
 - if you want to test facebook logIn button; sighUp; or password reset syste;
  
  
