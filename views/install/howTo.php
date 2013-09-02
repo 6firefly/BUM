@@ -53,6 +53,18 @@ $this->menu=array(
         </DIV>
     </LI>
     <LI>
+        How to find a user social status (if the user uses some social providers to log in in to his/hers account):
+        <DIV class="box">
+            Yii::app()->user->socialLogIn; // type array; see: Users:getSocialLogIn(); 
+        </DIV>
+        so if a user is able to log in using some social providers, the following code will evaluate true:
+        <DIV class="box">
+            if( is_array($modelUsers->social_login) && array_intersect($modelUsers->social_login, Users::getSocialLogIn()) ){
+                // user is able to logIn using some social providers ...
+            }
+        </DIV>
+    </LI>
+    <LI>
         In <?php echo CHtml::link('settings', array('settings/batchUpdate')); ?> you may add your Facebook App ID and Facebook secret in order to enable fecebook logIn.
     </LI>
     <LI>

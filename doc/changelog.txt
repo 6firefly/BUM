@@ -1,3 +1,5 @@
+2013-09-02
+   - show if users enabled facebook logIn (on: Manage Users, View all Users and View Private Profile pages)
 2013-08-29
    - main update: add FACEBOOK login button
    - other small updates...

@@ -51,7 +51,13 @@
                                 'target'=>'_self',
                             ));
                         }else{
-                            echo 'Facebook login enabled';
+                            echo 'Facebook login enabled ';
+                            /*$this->widget('facebook_app', array(
+                                'appId'=>Yii::app()->getModule('bum')->fb_appId,
+                                'secret'=>Yii::app()->getModule('bum')->fb_secret,
+                                'text'=>'Update <b>Facebook</b>',
+                                'target'=>'_self',
+                            ));// */
                         }
                     }
                     

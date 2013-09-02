@@ -83,8 +83,16 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 <div class="view">
     
     <?php if (!in_array($model->status, Users::getSocialOnlyStatuses())): ?>
-        <H2><?php echo CHtml::link(CHtml::encode($model->user_name), array('viewMyPrivateProfile', 'id'=>$model->id)); ?></H2>
+        <H2><?php 
+            echo CHtml::link(CHtml::encode($model->user_name), array('viewMyPrivateProfile', 'id'=>$model->id)); 
+            
+            echo " &nbsp; ";
+            if(is_array($model->social_login) && array_intersect($model->social_login, Users::getSocialLogIn())): 
+                echo CHtml::image(Yii::app()->getModule("bum")->assetsUrl . "/images/facebook_small.gif","f",array("title"=>"facebook logIn is enabled", "style"=>"width:11px;height:11px;"));  
+            endif;
+        ?></H2>
     <?php endif; ?>
+        
 
     <H3>
         <?php echo CHtml::encode($model->name); ?>

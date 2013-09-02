@@ -159,13 +159,14 @@ class UsersController extends BumController
             $fb_user = $facebook->getUser();
             if($fb_user){
                 $usersData=UsersData::model()->findByPk(Yii::app()->user->id);
-                if(is_null($usersData->facebook_user_id)){
+                // associate facebook account or update facebook account
+                //if(is_null($usersData->facebook_user_id)){
                     $usersData->facebook_user_id = $fb_user;
                     $usersData->save(); //should work
                     
                     $this->redirect(Yii::app()->user->returnUrl);
                     Yii::app()->end();
-                }
+                //}
             }
             
     		$this->redirect(Yii::app()->homeUrl);

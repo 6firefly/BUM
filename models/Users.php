@@ -44,6 +44,11 @@ class Users extends BumActiveRecord
     public $password_old;
     
 	public $verifyCode; // property required by Captcha
+    
+    public $social_login;
+
+    CONST SOCIAL_NO=0;
+    CONST SOCIAL_FACEBOOK=50;
 
     CONST ACTIVE_NO=0;
     CONST ACTIVE_YES=1;
@@ -95,13 +100,24 @@ class Users extends BumActiveRecord
     }
     
     /**
-     * Get the active status
+     * Get only social statuses
      * @return type 
      */
     public static function getSocialOnlyStatuses()
     {
         return array(
             self::STATUS_ONLY_FACEBOOK,
+        );
+    }
+    
+    /**
+     * Social logIn codes
+     * @return type 
+     */
+    public static function getSocialLogIn()
+    {
+        return array(
+            self::SOCIAL_FACEBOOK,
         );
     }
     
@@ -235,6 +251,7 @@ class Users extends BumActiveRecord
                     'status' => 'Status',
                     'verifyCode' => 'Verification Code',
                     'email'=>'Primary Email',
+                    'social_login'=>'Social login',
                 );
                 break;
         }
@@ -268,6 +285,13 @@ class Users extends BumActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+    
+    public function afterFind(){
+        if(!empty($this->usersData->facebook_user_id)){
+            $this->social_login[] = self::SOCIAL_FACEBOOK;
+        }
+        parent::afterFind();
+    }
     
 	/**
 	 * Checks if the given password is correct.

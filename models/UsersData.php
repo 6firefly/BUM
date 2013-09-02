@@ -19,6 +19,7 @@
  * @property string $description
  * @property string $site
  * @property string $facebook_address
+ * @property string $facebook_user_id
  * @property string $twitter_address
  * @property string $activation_code
  * @property string $date_of_update

@@ -20,6 +20,13 @@
             (<b><?php echo CHtml::encode($data->getAttributeLabel('id')); ?>:</b>
             <?php echo CHtml::link(CHtml::encode($data->id), array('viewProfile', 'id'=>$data->id)); ?>)
         </SMALL>
+        
+        <?php    
+            echo " &nbsp; ";
+            if(is_array($data->social_login) && array_intersect($data->social_login, Users::getSocialLogIn())): 
+                echo CHtml::image(Yii::app()->getModule("bum")->assetsUrl . "/images/facebook_small.gif","f",array("title"=>"facebook logIn is enabled", "style"=>"width:11px;height:11px;"));  
+            endif;
+        ?>
     </H2>
 
     <H3>

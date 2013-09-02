@@ -39,6 +39,13 @@ class BumWebUser extends CWebUser {
       return $user->active;
     }
 
+    // Return user's social logIn status.
+    // access it by Yii::app()->user->socialLogIn
+    function getSocialLogIn(){
+      $user = $this->loadUser(Yii::app()->user->id);
+      return $user->social_login;
+    }
+
     /**
     * @return string the status text display for the current issue
     // access it by Yii::app()->user->statusText
