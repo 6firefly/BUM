@@ -130,7 +130,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
         ),
         array(
             'name'=>'social_login',
-            'type'=>'html',
+            'type'=>'raw',
             'filter'=>'',
             'value'=>'
                 (is_array($data->social_login) && array_intersect($data->social_login, Users::getSocialLogIn()))?CHtml::image(Yii::app()->getModule("bum")->assetsUrl . "/images/facebook_small.gif","f",array("title"=>"facebook logIn is enabled", "style"=>"width:11px;height:11px;")):""
