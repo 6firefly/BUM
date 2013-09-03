@@ -32,6 +32,6 @@ http://bum.infoprofessional.ro
    
 http://social-test.infoprofessional.ro
 
-- if you want to test facebook logIn button; sighUp; or password reset syste;
+- if you want to test facebook logIn button; sighUp; or password reset system;
  
  
