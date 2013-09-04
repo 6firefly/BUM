@@ -51,13 +51,22 @@
                                 'target'=>'_self',
                             ));
                         }else{
-                            echo 'Facebook login enabled ';
+                            echo 'Facebook login enabled. ';
                             /*$this->widget('facebook_app', array(
                                 'appId'=>Yii::app()->getModule('bum')->fb_appId,
                                 'secret'=>Yii::app()->getModule('bum')->fb_secret,
                                 'text'=>'Update <b>Facebook</b>',
                                 'target'=>'_self',
                             ));// */
+                        }
+                        
+                        if(is_null($modelUsersData->twitter_user_id)){
+                            $this->widget('twitter_app', array(
+                                'text'=>'Enable sign in with <b>Twitter</b>',
+                                'target'=>'_self',
+                            ));
+                        }else{
+                            echo ' Twitter login enabled. ';
                         }
                     }
                     

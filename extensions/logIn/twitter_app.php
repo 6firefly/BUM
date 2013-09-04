@@ -9,13 +9,13 @@
  * This widget displays the facebook login button.
  */
 
-/* @var $target facebook link target */
-/* @var $appId facebook app id */
-/* @var $secret facebook secret */
-/* @var $redirect_uri the returning url after facebook login */
-/* @var $text text to be dispalyed at facebook login button */
+/* @var $target twitter link target */
+/* @var $key twitter customer id */
+/* @var $secret twitter customer secret */
+/* @var $redirect_uri the returning url after twitter login */
+/* @var $text text to be dispalyed at twitter login button */
 
-class facebook_app extends CWidget
+class twitter_app extends CWidget
 {
     // getAssetsUrl()
     //    return the URL for this widget's assets, performing the publish operation
@@ -23,7 +23,7 @@ class facebook_app extends CWidget
     private $_assetsUrl;
     
     public $target;
-    public $appId;
+    public $key;
     public $secret;
     public $redirect_uri;
     public $text;
@@ -44,25 +44,15 @@ class facebook_app extends CWidget
     
     public function init()
     {
-        //require '../src/facebook.php';
-        
-        // Create our Application instance
-        $facebook = new facebook(array(
-          'appId'  => $this->appId,
-          'secret' => $this->secret,
-        ));
-
-        // Get User ID
-        $this->user = $facebook->getUser();
             
         if(!isset($this->target)) $this->target = "_blank";
-        if(!isset($this->redirect_uri)) $this->redirect_uri = Yii::app()->createAbsoluteUrl(Yii::app()->user->loginUrl[0], array('social'=>'facebook'));
-        if(!isset($this->text)) $this->text = 'Sign in with <b>Facebook</b>';
+        if(!isset($this->redirect_uri)) $this->redirect_uri = Yii::app()->createAbsoluteUrl(Yii::app()->user->loginUrl[0]);
+        if(!isset($this->text)) $this->text = 'Sign in with <b>Twitter</b>';
             
         if(Yii::app()->user->isGuest){
-            $this->render("facebook_app", array('facebook'=>$facebook));
+            $this->render("twitter_app");
         }else{
-            $this->render("facebook_app", array('facebook'=>$facebook));            
+            $this->render("twitter_app");            
         }
     }
     

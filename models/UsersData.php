@@ -21,6 +21,7 @@
  * @property string $facebook_address
  * @property string $facebook_user_id
  * @property string $twitter_address
+ * @property string $twitter_user_id
  * @property string $activation_code
  * @property string $date_of_update
  *

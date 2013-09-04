@@ -127,6 +127,20 @@ class BumModule extends CWebModule
     public $fb_secret = '***';
     /* ~~~~~~~~~~~~ END FACEBOOK ~~~~~~~~~~~~ */
     
+    /* ~~~~~~~~~~~~ TWITTER ~~~~~~~~~~~~ */
+	/**
+     * @var string
+     * Twitter Consumer key
+     */
+    public $twitter_key = '***';
+    
+	/**
+     * @var string
+     * Twitter customer secret
+     */
+    public $twitter_secret = '***';
+    /* ~~~~~~~~~~~~ END TWITTER ~~~~~~~~~~~~ */
+    
     /**
      * @var bool
      * If the triggers from the database are active and used. 
@@ -160,6 +174,7 @@ class BumModule extends CWebModule
             
 			'bum.extensions.logIn.*',
 			'bum.components.facebook-php-sdk-master.src.*', // include the facebook-php-sdk
+			'bum.components.twitteroauth-master.twitteroauth.*', // include twitteroauth
 		));
         
         if (!Yii::app()->hasComponent('mail') || get_class(Yii::app()->getComponent('mail')) != "YiiMail") {

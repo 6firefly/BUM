@@ -197,6 +197,8 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                                     echo '<HR/>';
                             ?></TD></TR><?php
                         break;
+                    case 'twitter_key':
+                    case 'twitter_secret':
                     case 'fb_appId':
                     case 'fb_secret':
                             ?><TR>

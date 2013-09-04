@@ -53,6 +53,12 @@ $this->menu=array(
         </DIV>
     </LI>
     <LI>
+        How to find a user last LogIn date:
+        <DIV class="box">
+            Yii::app()->user->lastLogIn;
+        </DIV>
+    </LI>
+    <LI>
         How to find a user social status (if the user uses some social providers to log in in to his/hers account):
         <DIV class="box">
             Yii::app()->user->socialLogIn; // type array; see: Users:getSocialLogIn(); 
@@ -74,6 +80,18 @@ $this->menu=array(
            &nbsp;&nbsp;&nbsp; 'appId'=>Yii::app()->getModule('bum')->fb_appId,<BR/>
            &nbsp;&nbsp;&nbsp; 'secret'=>Yii::app()->getModule('bum')->fb_secret,<BR/>
            &nbsp;&nbsp;&nbsp; 'text'=>'Sign in with &lt;B&gt;Facebook&lt;/B&gt;',<BR/>
+           &nbsp;&nbsp;&nbsp; 'target'=>'_self',<BR/>
+           ));<BR/>
+        </DIV>
+    </LI>
+    <LI>
+        In <?php echo CHtml::link('settings', array('settings/batchUpdate')); ?> you may add your Twitter Customer key and Customer secret in order to enable twitter logIn.
+    </LI>
+    <LI>
+        How to include twitter logIn button:
+        <DIV class="box">
+           $this->widget('twitter_app', array(<BR/>
+           &nbsp;&nbsp;&nbsp; 'text'=>'Sign in with &lt;B&gt;Twitter&lt;/B&gt;',<BR/>
            &nbsp;&nbsp;&nbsp; 'target'=>'_self',<BR/>
            ));<BR/>
         </DIV>

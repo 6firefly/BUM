@@ -427,6 +427,26 @@ return $body_;
             'version' => 1,
         );
         self::initSetting($module, $setting);
+        //
+        // init twitter consumerKey
+        $setting = array(
+            'name' => 'twitter_key',
+            'label' => 'Twitter Consumer key',
+            'description' => '',
+            'setting_order' => 1400,
+            'version' => 1,
+        );
+        self::initSetting($module, $setting);
+        
+        // init facebook secret
+        $setting = array(
+            'name' => 'twitter_secret',
+            'label' => 'Twitter customer secret',
+            'description' => '',
+            'setting_order' => 1400,
+            'version' => 1,
+        );
+        self::initSetting($module, $setting);
         ///////////////////////////////
     }
 }

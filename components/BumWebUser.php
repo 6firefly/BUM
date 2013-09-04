@@ -39,6 +39,13 @@ class BumWebUser extends CWebUser {
       return $user->active;
     }
 
+    // Return user's last logIn date.
+    // access it by Yii::app()->user->lastLogIn
+    function getLastLogIn(){
+      $user = $this->loadUser(Yii::app()->user->id);
+      return $user->date_of_last_access;
+    }
+
     // Return user's social logIn status.
     // access it by Yii::app()->user->socialLogIn
     function getSocialLogIn(){

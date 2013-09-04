@@ -45,6 +45,11 @@ if (!Yii::app()->getModule('bum')->demoMode) : ?>
                 'text'=>'Sign in with <b>Facebook</b>',
                 'target'=>'_self',
             )); ?>
+        
+        <?php $this->widget('twitter_app', array(
+                'text'=>'Sign in with <b>Twitter</b>',
+                'target'=>'_self',
+            )); ?>
     </DIV>
 <?php endif; ?>
 

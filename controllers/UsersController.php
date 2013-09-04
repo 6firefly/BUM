@@ -66,7 +66,7 @@ class UsersController extends BumController
 	{
 		return array(
 			array('allow',  // 
-				'actions'=>array('logIn', 'viewProfile', 'signUp', 'resendSignUpConfirmationEmail', 'passwordRecoveryWhatUser', 'passwordRecoveryAskCode', 'activate', 'captcha'),
+				'actions'=>array('logIn', 'viewProfile', 'signUp', 'resendSignUpConfirmationEmail', 'passwordRecoveryWhatUser', 'passwordRecoveryAskCode', 'activate', 'captcha', 'twitterRedirect'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform certain actions; some actions may require even more rights
@@ -91,15 +91,19 @@ class UsersController extends BumController
 				'class'=>'CCaptchaAction',
 				'backColor'=>0xFFFFFF,
 			),
+            
+            'twitterRedirect'=>'bum.extensions.logIn.twitterRedirect',
 		);
 	}
     
 	/**
 	 * Displays the login page
 	 */
-	public function actionLogIn()
+	public function actionLogIn($social = NULL)
 	{
         if(Yii::app()->user->isGuest){
+            $social_login = false; // if social login then dismiss normal logIn
+            
             $model = new LoginForm;
 
             // if it is ajax validation request
@@ -109,35 +113,90 @@ class UsersController extends BumController
                 Yii::app()->end();
             }
 
-            // check to see if user is logged in using facebook account
-            $facebook = new facebook(array(
-              'appId'  => $this->module->fb_appId,
-              'secret' => $this->module->fb_secret,
-            ));
+            if(isset($social) && $social == 'facebook'){
+                // ~~~~~~~~~~~~~~~~~~~~~~~~~~ FACEBOOK ~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+                // check to see if user is logged in using facebook account
+                $facebook = new facebook(array(
+                  'appId'  => $this->module->fb_appId,
+                  'secret' => $this->module->fb_secret,
+                ));
 
-            // Get User ID
-            $fb_user = $facebook->getUser();
-            if($fb_user){
+                // Get User ID
+                $fb_user = $facebook->getUser();
+                if($fb_user){
+                    $social_login = true;
 
-                // then the user is logged by using facebook account; authenticate user
-                // $model->socialLogin('facebook');
-                // 
-                // echo 'You are logged in with your facebook account! ';
-                // echo CHtml::link('logout', Yii::app()->createUrl('site/logout'));
-                // Yii::app()->end();
+                    // then the user is logged by using facebook account; authenticate user
+                    // $model->socialLogin('facebook');
+                    // 
+                    // echo 'You are logged in with your facebook account! ';
+                    // echo CHtml::link('logout', Yii::app()->createUrl('site/logout'));
+                    // Yii::app()->end();
+
+                    $social = array(
+                        'provider' => 'facebook',
+                        'user_id' => $fb_user,
+                    );
+                    if($model->socialLogin($social)){
+                            if(Yii::app()->user->status == Users::STATUS_ONLY_FACEBOOK){
+                                $this->redirect(Yii::app()->createUrl('bum/users/socialUpdate', array('id' => Yii::app()->user->id)));            
+                            }else{
+                                $this->redirect(Yii::app()->user->returnUrl);            
+                            }
+                    }
+                }
+                // ~~~~~~~~~~~~~~~~~~~~~~~~~~ FACEBOOK END ~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+            }
+            
+            
+            if(isset($social) && $social == 'twitter'){
+                // ~~~~~~~~~~~~~~~~~~~~~~~~~~ TWITTER ~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+                
+                /* If the oauth_token is old redirect to the connect page. */
+                if (isset($_REQUEST['oauth_token']) && $_SESSION['oauth_token'] !== $_REQUEST['oauth_token']) {
+                  // $_SESSION['oauth_status'] = 'oldtoken';
+                  $this->redirect(array("users/logout")); 
+                }
+                
+                spl_autoload_unregister(array('YiiBase', 'autoload')); // Disable Yii autoloader
+                require_once(dirname(__FILE__) . '/../components/twitteroauth-master/twitteroauth/twitteroauth.php');
+                /* Create TwitteroAuth object with app key/secret and token key/secret from default phase */
+                $connection = new TwitterOAuth(Yii::app()->getModule('bum')->twitter_key, Yii::app()->getModule('bum')->twitter_secret, $_SESSION['oauth_token'], $_SESSION['oauth_token_secret']);
+                spl_autoload_register(array('YiiBase', 'autoload')); // Register Yii autoloader
+                
+                /* Request access tokens from twitter */
+                $access_token = $connection->getAccessToken($_REQUEST['oauth_verifier']);
 
                 $social = array(
-                    'provider' => 'facebook',
-                    'user_id' => $fb_user,
+                    'provider' => 'twitter',
+                    'user_id' => $access_token['user_id'],
                 );
-                if($model->socialLogin($social)){
-                        if(Yii::app()->user->status == Users::STATUS_ONLY_FACEBOOK){
-                            $this->redirect(Yii::app()->createUrl('bum/users/socialUpdate', array('id' => Yii::app()->user->id)));            
-                        }else{
-                            $this->redirect(Yii::app()->user->returnUrl);            
-                        }
+
+                /* Remove no longer needed request tokens */
+                unset($_SESSION['oauth_token']);
+                unset($_SESSION['oauth_token_secret']);
+                
+                /* If HTTP response is 200 continue otherwise send to connect page to retry */
+                if (200 == $connection->http_code) {
+                    
+                    /* The user has been verified and the access tokens can be saved for future use */
+                    if($model->socialLogin($social)){
+                            if(Yii::app()->user->status == Users::STATUS_ONLY_TWITTER){
+                                $this->redirect(Yii::app()->createUrl('bum/users/socialUpdate', array('id' => Yii::app()->user->id)));            
+                            }else{
+                                $this->redirect(Yii::app()->user->returnUrl);            
+                            }
+                    }
+                    
+                } else {
+                  /* Save HTTP status for error dialog on connnect page.*/
+                    Yii::app()->user->setFlash('error', "Could not connect to Twitter. Refresh the page or try again later!");
+                    $this->controller->redirect(array("users/logout"));
                 }
-            }else{
+                // ~~~~~~~~~~~~~~~~~~~~~~~~~~ TWITTER END ~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+            }
+            
+            if(!$social_login){
                 // collect user input data
                 if(isset($_POST['LoginForm']))
                 {
@@ -150,23 +209,70 @@ class UsersController extends BumController
             // display the login form
             $this->render('login',array('model'=>$model));
         }else{        
-            // check to see if user is logged in using facebook account
-            $facebook = new facebook(array(
-              'appId'  => $this->module->fb_appId,
-              'secret' => $this->module->fb_secret,
-            ));
-            // Get User ID
-            $fb_user = $facebook->getUser();
-            if($fb_user){
-                $usersData=UsersData::model()->findByPk(Yii::app()->user->id);
-                // associate facebook account or update facebook account
-                //if(is_null($usersData->facebook_user_id)){
-                    $usersData->facebook_user_id = $fb_user;
-                    $usersData->save(); //should work
+            if(isset($social) && $social == 'facebook'){
+                // ~~~~~~~~~~~~~~~~~~~~~~~~~~ FACEBOOK ~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+                // check to see if user is logged in using facebook account
+                $facebook = new facebook(array(
+                  'appId'  => $this->module->fb_appId,
+                  'secret' => $this->module->fb_secret,
+                ));
+                // Get User ID
+                $fb_user = $facebook->getUser();
+                if($fb_user){
+                    $usersData=UsersData::model()->findByPk(Yii::app()->user->id);
+                    // associate facebook account or update facebook account
+                    //if(is_null($usersData->facebook_user_id)){
+                        $usersData->facebook_user_id = $fb_user;
+                        $usersData->save(); //should work
+
+                        $this->redirect(Yii::app()->user->returnUrl);
+                        Yii::app()->end();
+                    //}
+                }
+                // ~~~~~~~~~~~~~~~~~~~~~~~~~~ FACEBOOK END ~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+            }
+            
+            if(isset($social) && $social == 'twitter'){
+                // ~~~~~~~~~~~~~~~~~~~~~~~~~~ TWITTER ~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+                
+                /* If the oauth_token is old redirect to the connect page. */
+                if (isset($_REQUEST['oauth_token']) && $_SESSION['oauth_token'] !== $_REQUEST['oauth_token']) {
+                  // $_SESSION['oauth_status'] = 'oldtoken';
+                  $this->redirect(array("users/logout")); 
+                }
+                
+                spl_autoload_unregister(array('YiiBase', 'autoload')); // Disable Yii autoloader
+                require_once(dirname(__FILE__) . '/../components/twitteroauth-master/twitteroauth/twitteroauth.php');
+                /* Create TwitteroAuth object with app key/secret and token key/secret from default phase */
+                $connection = new TwitterOAuth(Yii::app()->getModule('bum')->twitter_key, Yii::app()->getModule('bum')->twitter_secret, $_SESSION['oauth_token'], $_SESSION['oauth_token_secret']);
+                spl_autoload_register(array('YiiBase', 'autoload')); // Register Yii autoloader
+                
+                /* Request access tokens from twitter */
+                $access_token = $connection->getAccessToken($_REQUEST['oauth_verifier']);
+
+                /* Remove no longer needed request tokens */
+                unset($_SESSION['oauth_token']);
+                unset($_SESSION['oauth_token_secret']);
+                
+                /* If HTTP response is 200 continue otherwise send to connect page to retry */
+                if (200 == $connection->http_code) {
                     
-                    $this->redirect(Yii::app()->user->returnUrl);
-                    Yii::app()->end();
-                //}
+                    $usersData=UsersData::model()->findByPk(Yii::app()->user->id);
+                    // associate twitter account or update twitter account
+                    //if(is_null($usersData->twitter_user_id)){
+                        $usersData->twitter_user_id = $access_token['user_id'];
+                        $usersData->save(); //should work
+
+                        $this->redirect(Yii::app()->user->returnUrl);
+                        Yii::app()->end();
+                    //}
+                    
+                } else {
+                  /* Save HTTP status for error dialog on connnect page.*/
+                    Yii::app()->user->setFlash('error', "Could not connect to Twitter. Refresh the page or try again later!");
+                    $this->controller->redirect(array("users/logout"));
+                }
+                // ~~~~~~~~~~~~~~~~~~~~~~~~~~ TWITTER END ~~~~~~~~~~~~~~~~~~~~~~~~~~ //
             }
             
     		$this->redirect(Yii::app()->homeUrl);

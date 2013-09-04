@@ -49,6 +49,7 @@ class Users extends BumActiveRecord
 
     CONST SOCIAL_NO=0;
     CONST SOCIAL_FACEBOOK=50;
+    CONST SOCIAL_TWITTER=51;
 
     CONST ACTIVE_NO=0;
     CONST ACTIVE_YES=1;
@@ -58,6 +59,7 @@ class Users extends BumActiveRecord
     CONST STATUS_NORMAL=0;
     CONST STATUS_SPECIAL=10;
     CONST STATUS_ONLY_FACEBOOK=50;
+    CONST STATUS_ONLY_TWITTER=51;
     CONST STATUS_ATTENTION=100;
         
     /**
@@ -95,6 +97,7 @@ class Users extends BumActiveRecord
             self::STATUS_NORMAL => 'Normal',
             self::STATUS_SPECIAL => 'Special',
             self::STATUS_ONLY_FACEBOOK => 'Facebook only',
+            self::STATUS_ONLY_TWITTER => 'Twitter only',
             self::STATUS_ATTENTION => 'Attention!',
         );
     }
@@ -107,6 +110,7 @@ class Users extends BumActiveRecord
     {
         return array(
             self::STATUS_ONLY_FACEBOOK,
+            self::STATUS_ONLY_TWITTER,
         );
     }
     
@@ -118,6 +122,7 @@ class Users extends BumActiveRecord
     {
         return array(
             self::SOCIAL_FACEBOOK,
+            self::SOCIAL_TWITTER,
         );
     }
     
@@ -289,6 +294,9 @@ class Users extends BumActiveRecord
     public function afterFind(){
         if(!empty($this->usersData->facebook_user_id)){
             $this->social_login[] = self::SOCIAL_FACEBOOK;
+        }
+        if(!empty($this->usersData->twitter_user_id)){
+            $this->social_login[] = self::SOCIAL_TWITTER;
         }
         parent::afterFind();
     }

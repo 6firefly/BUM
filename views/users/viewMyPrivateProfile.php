@@ -88,7 +88,12 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
             
             echo " &nbsp; ";
             if(is_array($model->social_login) && array_intersect($model->social_login, Users::getSocialLogIn())): 
-                echo CHtml::image(Yii::app()->getModule("bum")->assetsUrl . "/images/facebook_small.gif","f",array("title"=>"facebook logIn is enabled", "style"=>"width:11px;height:11px;"));  
+                if(in_array(Users::SOCIAL_FACEBOOK, $model->social_login)){
+                   echo CHtml::image(Yii::app()->getModule("bum")->assetsUrl . "/images/facebook_small.gif","f",array("title"=>"facebook logIn is enabled", "style"=>"width:11px;height:11px;"));  
+                }
+                if(in_array(Users::SOCIAL_TWITTER, $model->social_login)){
+                   echo CHtml::image(Yii::app()->getModule("bum")->assetsUrl . "/images/twitter_small.gif","t",array("title"=>"twitter logIn is enabled", "style"=>"width:11px;height:11px;"));  
+                }
             endif;
         ?></H2>
     <?php endif; ?>

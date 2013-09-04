@@ -54,6 +54,9 @@ class BumUserIdentity extends CUserIdentity
             case 'facebook':
                 $usersData = UsersData::model()->findByAttributes(array('facebook_user_id' => $this->social_user_id));
                 break;
+            case 'twitter':
+                $usersData = UsersData::model()->findByAttributes(array('twitter_user_id' => $this->social_user_id));
+                break;
         }
         
         if($usersData){
@@ -82,7 +85,7 @@ class BumUserIdentity extends CUserIdentity
                             $letters = 'abcefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()_+{}[];:",./<>?';
 
                             $user = new Users;
-                            $user->user_name = 'facebook ' . uniqid('');
+                            $user->user_name = $this->social_provider . ' ' . uniqid('');
                             $user->email = uniqid('') . "@noEmail.com"; // Primary Email cannot be blank.
                             $user->active = 1;
                             $user->password = substr(str_shuffle($letters), 0, 15);
@@ -91,7 +94,7 @@ class BumUserIdentity extends CUserIdentity
 
                             if($user->save()){ // should work
 
-                                $user->user_name = 'facebook[' . $user->id . ']';
+                                $user->user_name = $this->social_provider . '[' . $user->id . ']';
                                 $user->email = $user->id . "@noEmail.com";
                                 $user->password = $user->password_repeat = ''; // because old password is not changed if new password is empty
                                 $user->save(); // to have a shorter user name and email address; id there is one error, old values remain
@@ -99,6 +102,45 @@ class BumUserIdentity extends CUserIdentity
                                 $usersData = new UsersData;
                                 $usersData->id = $user->id;
                                 $usersData->facebook_user_id = $this->social_user_id;
+                                $usersData->activation_code = sha1(mt_rand(1, 99999).time());
+
+                                if($usersData->save()){ // should work
+                                    $this->_id = $user->id;
+                                    $this->username = $user->user_name;
+
+                                    if (NULL == $user->date_of_last_access) {
+                                        $lastLogin = time();
+                                    } else {
+                                        $lastLogin = strtotime($user->date_of_last_access);
+                                    }
+
+                                    $this->setState('dateOfLastAccess', $lastLogin);
+                                    $this->errorCode = self::ERROR_NONE;                                
+                                }
+                            }
+
+                        break;
+                    case 'twitter':
+                            $letters = 'abcefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()_+{}[];:",./<>?';
+
+                            $user = new Users;
+                            $user->user_name = $this->social_provider . ' ' . uniqid('');
+                            $user->email = uniqid('') . "@noEmail.com"; // Primary Email cannot be blank.
+                            $user->active = 1;
+                            $user->password = substr(str_shuffle($letters), 0, 15);
+                            $user->password_repeat = $user->password;
+                            $user->status = Users::STATUS_ONLY_TWITTER;
+
+                            if($user->save()){ // should work
+
+                                $user->user_name = $this->social_provider . '[' . $user->id . ']';
+                                $user->email = $user->id . "@noEmail.com";
+                                $user->password = $user->password_repeat = ''; // because old password is not changed if new password is empty
+                                $user->save(); // to have a shorter user name and email address; id there is one error, old values remain
+
+                                $usersData = new UsersData;
+                                $usersData->id = $user->id;
+                                $usersData->twitter_user_id = $this->social_user_id;
                                 $usersData->activation_code = sha1(mt_rand(1, 99999).time());
 
                                 if($usersData->save()){ // should work
