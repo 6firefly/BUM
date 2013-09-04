@@ -6,8 +6,10 @@ Basic User Management (BUM) module aims to be a simple and easy to use module, b
 What BUM has to offer:
  - users login (using their user name or email address);
  - facebook users login;
+ - twitter users login;
  - associate facebook logIn to an existing user;
- - user status code (block user access, facebook only, normal, special...);
+ - associate twitter logIn to an existing user;
+ - user status code (block user access, facebook only, twitter only, normal, special...);
  - activate/deactivate user (users may activate their account by email, clicking on an activate link );
  - manage user (create/update/delete users);
  - view all users (in two different ways);

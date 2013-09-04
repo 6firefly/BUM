@@ -91,6 +91,7 @@ CREATE  TABLE IF NOT EXISTS users_data (
   facebook_address VARCHAR(60) NULL,
   facebook_user_id BIGINT UNSIGNED,
   twitter_address VARCHAR(60) NULL,
+  twitter_user_id BIGINT UNSIGNED,
   activation_code VARCHAR(45) NULL,
   date_of_update TIMESTAMP NULL,
   invitations_left SMALLINT NOT NULL DEFAULT -1,
