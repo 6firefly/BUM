@@ -166,7 +166,7 @@ $this->menu=array(
                 </li>
             </UL>
             <?php
-            echo CHtml::AjaxLink('create/update role/tasks/operations', array("install/InstallRights"), array('update'=>'#defaultRights'), array('id'=>'CreateAuthRights', 'live'=>false));
+            echo CHtml::AjaxLink('Click here to automatically create/update role/tasks/operations!', array("install/InstallRights"), array('update'=>'#defaultRights'), array('id'=>'CreateAuthRights', 'live'=>false));
             ?><DIV id="defaultRights"></DIV>
         </p>
 
@@ -181,7 +181,7 @@ $this->menu=array(
                 <li><?php echo $defaultSuperAdminUserData['user_name']; ?></li>
                 <li><?php echo $defaultDemoUserData['user_name']; ?></li>
             </UL>
-            <?php echo CHtml::AjaxLink('create default users', array("install/InstallDefaultUser"), array('update'=>'#defaultUsers'), array('id'=>'CreateDefaultUsers', 'live'=>false)); ?>
+            <?php echo CHtml::AjaxLink('Click here to automatically create default users!', array("install/InstallDefaultUser"), array('update'=>'#defaultUsers'), array('id'=>'CreateDefaultUsers', 'live'=>false)); ?>
             <DIV id="defaultUsers"></DIV>
         </p>
 
