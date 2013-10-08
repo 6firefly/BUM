@@ -20,11 +20,11 @@ $this->breadcrumbs=array(
 );
 
 $cs = Yii::app()->getClientScript();
-$cs->registerScriptFile($this->module->assetsUrl . '/js/invitations.js');
+$cs->registerScriptFile(Yii::app()->getModule("bum")->assetsUrl . '/js/invitations.js');
 
 $this->menu=array(
-	array('label'=>'Install', 'url'=>array('install/index'), 'visible'=>($this->module->install)),
-	array('template'=>'<HR style="margin:0 auto;"/>', 'visible'=>($this->module->install)), // separator
+	array('label'=>'Install', 'url'=>array('install/index'), 'visible'=>(Yii::app()->getModule("bum")->install)),
+	array('template'=>'<HR style="margin:0 auto;"/>', 'visible'=>(Yii::app()->getModule("bum")->install)), // separator
     
 	array('label'=>'Settings', 'url'=>array('settings/batchUpdate'), 'visible'=>(Yii::app()->user->checkAccess("settings_manage"))),
 	array('template'=>'<HR style="margin:0 auto;"/>', 'visible'=>(Yii::app()->user->checkAccess("settings_manage"))), // separator
@@ -48,8 +48,8 @@ $this->menu=array(
 	array('label'=>'invite', 'url'=>'#', 
         'linkOptions'=>array(
                 'onclick'=>'invitationDialog(
-                        "' . Yii::app()->createUrl($this->module->name . "/invitations/AJAXCreate", array('id_user'=>Yii::app()->user->id)) . '",
-                        "' . Yii::app()->createUrl($this->module->name . "/invitations/AJAXView", array('id_user'=>Yii::app()->user->id)) . '"
+                        "' . Yii::app()->createUrl(Yii::app()->getModule("bum")->name . "/invitations/AJAXCreate", array('id_user'=>Yii::app()->user->id)) . '",
+                        "' . Yii::app()->createUrl(Yii::app()->getModule("bum")->name . "/invitations/AJAXView", array('id_user'=>Yii::app()->user->id)) . '"
                     );' 
             ), 
         'visible'=>(!Yii::app()->user->isGuest && Yii::app()->getModule('bum')->invitationButtonDisplay)),
@@ -59,8 +59,8 @@ $this->menu=array(
 	array('label'=>'Create User', 'url'=>array('users/create'), 'visible'=>Yii::app()->user->checkAccess("users_create")),
 	array('label'=>'View all Users', 'url'=>array('users/viewAllUsers'), 'visible'=>Yii::app()->user->checkAccess("users_all_view"), 'active'=>true),
     
-	array('template'=>'<HR style="margin:0 auto;"/>', 'visible'=>($this->module->logInIfNotVerified && !Yii::app()->user->active && !Yii::app()->user->isGuest)), // separator
-	array('label'=>'Resend Confirm. Email', 'url'=>array('users/resendSignUpConfirmationEmail'), 'visible'=>($this->module->logInIfNotVerified && !Yii::app()->user->active && !Yii::app()->user->isGuest)),
+	array('template'=>'<HR style="margin:0 auto;"/>', 'visible'=>(Yii::app()->getModule("bum")->logInIfNotVerified && !Yii::app()->user->active && !Yii::app()->user->isGuest)), // separator
+	array('label'=>'Resend Confirm. Email', 'url'=>array('users/resendSignUpConfirmationEmail'), 'visible'=>(Yii::app()->getModule("bum")->logInIfNotVerified && !Yii::app()->user->active && !Yii::app()->user->isGuest)),
 );
 
 /* Send an invitation dialog box */
@@ -73,7 +73,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
 ));
     ?><DIV id="dlg_history_content"></DIV><?php
     ?><DIV id="dlg_invite_content"></DIV><?php
-    ?><div id="AjaxLoader" style="display: none; margin: 0 auto; text-align: center;"><IMG src="<?php echo $this->module->assetsUrl; ?>/images/spinner.gif" width="60px" height="60px" /></div><?php
+    ?><div id="AjaxLoader" style="display: none; margin: 0 auto; text-align: center;"><IMG src="<?php echo Yii::app()->getModule("bum")->assetsUrl; ?>/images/spinner.gif" width="60px" height="60px" /></div><?php
 $this->endWidget('zii.widgets.jui.CJuiDialog');
 
 ?>

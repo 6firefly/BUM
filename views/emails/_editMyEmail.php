@@ -29,7 +29,7 @@
                       'success'=>'function(data){
                                 $("#printEmails").html(data);
                                 $.ajax({
-                                  url:"' . Yii::app()->createUrl($this->module->name . '/emails/hasUnverifiedEmails', array('id_user'=>$data->id_user)) . '",
+                                  url:"' . Yii::app()->createUrl(Yii::app()->getModule("bum")->name . '/emails/hasUnverifiedEmails', array('id_user'=>$data->id_user)) . '",
                                   success:function(response){
                                       var hasUnverifiedEmails = jQuery.parseJSON(response);
                                       if (hasUnverifiedEmails) {
@@ -52,7 +52,7 @@
                             if (primaryEmail.changed) {
                                 $("#Users_email").val(primaryEmail.name);
                                 $.ajax({
-                                  url:"' . Yii::app()->createUrl($this->module->name . '/emails/viewMyEmails', array('id_user'=>$data->id_user)) . '",
+                                  url:"' . Yii::app()->createUrl(Yii::app()->getModule("bum")->name . '/emails/viewMyEmails', array('id_user'=>$data->id_user)) . '",
                                   success:function(response){
                                       $("#printEmails").html(response);
                                   }});

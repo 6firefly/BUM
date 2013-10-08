@@ -96,6 +96,6 @@ if (!Yii::app()->getModule('bum')->demoMode) : ?>
 <DIV class="message note">Forgot your password? Click <?php echo CHtml::link('here',array('users/passwordRecoveryWhatUser')); ?> to reset your password.</DIV>
 
 <?php 
-if ($this->module->install) :
+if (Yii::app()->getModule("bum")->install) :
     ?><DIV class="message note">Or go to the install page; click <?php echo CHtml::link('here',array('install/index')); ?>.</DIV><?php
 endif;

@@ -38,12 +38,12 @@
                               'success'=>'function(data){
                                         $("#addEmail").html(data);
                                         $.ajax({
-                                          url:"' . Yii::app()->createUrl($this->module->name . '/emails/viewMyEmails', array('id_user'=>$modelUsers->id)) . '",
+                                          url:"' . Yii::app()->createUrl(Yii::app()->getModule("bum")->name . '/emails/viewMyEmails', array('id_user'=>$modelUsers->id)) . '",
                                           success:function(response){
                                               $("#printEmails").html(response);
                                           }});
                                         $.ajax({
-                                          url:"' . Yii::app()->createUrl($this->module->name . '/emails/hasUnverifiedEmails', array('id_user'=>$modelUsers->id)) . '",
+                                          url:"' . Yii::app()->createUrl(Yii::app()->getModule("bum")->name . '/emails/hasUnverifiedEmails', array('id_user'=>$modelUsers->id)) . '",
                                           success:function(response){
                                               var hasUnverifiedEmails = jQuery.parseJSON(response);
                                               if (hasUnverifiedEmails) {

@@ -16,18 +16,18 @@ $this->breadcrumbs=array(
 
 
 $cs = Yii::app()->getClientScript();
-$cs->registerCssFile($this->module->assetsUrl . '/css/customizeEmails.css');
+$cs->registerCssFile(Yii::app()->getModule("bum")->assetsUrl . '/css/customizeEmails.css');
 
 $cs = Yii::app()->getClientScript();
-$cs->registerScriptFile($this->module->assetsUrl . '/js/invitations.js');
+$cs->registerScriptFile(Yii::app()->getModule("bum")->assetsUrl . '/js/invitations.js');
 
 $cs = Yii::app()->getClientScript();
-$cs->registerScriptFile($this->module->assetsUrl . '/js/customizeEmails.js');
+$cs->registerScriptFile(Yii::app()->getModule("bum")->assetsUrl . '/js/customizeEmails.js');
 
   
 $this->menu=array(    
-	array('label'=>'Install', 'url'=>array('install/index'), 'visible'=>($this->module->install)),
-	array('template'=>'<HR style="margin:0 auto;"/>', 'visible'=>($this->module->install)), // separator
+	array('label'=>'Install', 'url'=>array('install/index'), 'visible'=>(Yii::app()->getModule("bum")->install)),
+	array('template'=>'<HR style="margin:0 auto;"/>', 'visible'=>(Yii::app()->getModule("bum")->install)), // separator
     
 	array('label'=>'Settings', 'url'=>array('settings/batchUpdate'), 'visible'=>(Yii::app()->user->checkAccess("settings_manage"))),
 	array('template'=>'<HR style="margin:0 auto;"/>', 'visible'=>(Yii::app()->user->checkAccess("settings_manage"))), // separator
@@ -39,8 +39,8 @@ $this->menu=array(
 	array('label'=>'invite', 'url'=>'#', 
         'linkOptions'=>array(
                 'onclick'=>'invitationDialog(
-                        "' . Yii::app()->createUrl($this->module->name . "/invitations/AJAXCreate", array('id_user'=>Yii::app()->user->id)) . '",
-                        "' . Yii::app()->createUrl($this->module->name . "/invitations/AJAXView", array('id_user'=>Yii::app()->user->id)) . '"
+                        "' . Yii::app()->createUrl(Yii::app()->getModule("bum")->name . "/invitations/AJAXCreate", array('id_user'=>Yii::app()->user->id)) . '",
+                        "' . Yii::app()->createUrl(Yii::app()->getModule("bum")->name . "/invitations/AJAXView", array('id_user'=>Yii::app()->user->id)) . '"
                     );' 
             ), 
         'visible'=>(!Yii::app()->user->isGuest && Yii::app()->getModule('bum')->invitationButtonDisplay)),
@@ -50,8 +50,8 @@ $this->menu=array(
 	array('label'=>'Create User', 'url'=>array('users/create'), 'visible'=>Yii::app()->user->checkAccess("users_create")),
 	array('label'=>'View all Users', 'url'=>array('users/viewAllUsers'), 'visible'=>Yii::app()->user->checkAccess("users_all_view"), 'active'=>true),
     
-	array('template'=>'<HR style="margin:0 auto;"/>', 'visible'=>($this->module->logInIfNotVerified && !Yii::app()->user->active && !Yii::app()->user->isGuest)), // separator
-	array('label'=>'Resend Confirm. Email', 'url'=>array('users/resendSignUpConfirmationEmail'), 'visible'=>($this->module->logInIfNotVerified && !Yii::app()->user->active && !Yii::app()->user->isGuest)),
+	array('template'=>'<HR style="margin:0 auto;"/>', 'visible'=>(Yii::app()->getModule("bum")->logInIfNotVerified && !Yii::app()->user->active && !Yii::app()->user->isGuest)), // separator
+	array('label'=>'Resend Confirm. Email', 'url'=>array('users/resendSignUpConfirmationEmail'), 'visible'=>(Yii::app()->getModule("bum")->logInIfNotVerified && !Yii::app()->user->active && !Yii::app()->user->isGuest)),
 );
 
 /* Send an invitation dialog box */
@@ -64,7 +64,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
 ));
     ?><DIV id="dlg_history_content"></DIV><?php
     ?><DIV id="dlg_invite_content"></DIV><?php
-    ?><div id="AjaxLoader" style="display: none; margin: 0 auto; text-align: center;"><IMG src="<?php echo $this->module->assetsUrl; ?>/images/spinner.gif" width="60px" height="60px" /></div><?php
+    ?><div id="AjaxLoader" style="display: none; margin: 0 auto; text-align: center;"><IMG src="<?php echo Yii::app()->getModule("bum")->assetsUrl; ?>/images/spinner.gif" width="60px" height="60px" /></div><?php
 $this->endWidget('zii.widgets.jui.CJuiDialog');
 
 ?><div class="form">
@@ -184,7 +184,7 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                                     echo CHtml::activeTextField($setting,"[$i]value", array('size'=>45,'maxlength'=>45)); 
                                     if(Yii::app()->user->checkAccess('settings_emails_customization')){
                                         echo CHtml::button("customize email", array('onclick'=>'customizeEmailsDialog(
-                                            "' . Yii::app()->createUrl($this->module->name . "/siteEmailsContent/AJAXUpdate", array('name'=>$setting->name)) . '"
+                                            "' . Yii::app()->createUrl(Yii::app()->getModule("bum")->name . "/siteEmailsContent/AJAXUpdate", array('name'=>$setting->name)) . '"
                                         );'));
                                     }
                                 ?></TD>
@@ -258,6 +258,6 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
         'modal'=>true,
     )
 ));
-    ?><div id="AjaxLoader_costomize_email" style="display: none; margin: 0 auto; text-align: center;"><IMG src="<?php echo $this->module->assetsUrl; ?>/images/spinner.gif" width="60px" height="60px" /></div><?php
+    ?><div id="AjaxLoader_costomize_email" style="display: none; margin: 0 auto; text-align: center;"><IMG src="<?php echo Yii::app()->getModule("bum")->assetsUrl; ?>/images/spinner.gif" width="60px" height="60px" /></div><?php
     ?><DIV id="dlg_customize_email"></DIV><?php
 $this->endWidget('zii.widgets.jui.CJuiDialog');
