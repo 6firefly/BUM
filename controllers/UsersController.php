@@ -760,7 +760,7 @@ class UsersController extends BumController
         
         if($modelPasswordRecovery === NULL){
             // should'n reach here; unwanted attempt to recover a password...
-			throw new CHttpException(404,'The requested page does not exist.');
+			throw new CHttpException(404,'The requested page does not exist! Your password reset code is expired, has been used or does not exists!!');
         }else{
             // check if the password request link is still active
             $secFromPasswordRecoveryCreation = (time() - strtotime($modelPasswordRecovery->date_of_request));
@@ -775,7 +775,7 @@ class UsersController extends BumController
                 }else{
                     $modelPasswordRecovery->delete();
                 }
-    			throw new CHttpException(404,'The requested page does not exist.');
+    			throw new CHttpException(404,'The requested page does not exist! Your password reset code is expired, has been used or does not exists!');
             }else{
                 
                 // an code vas inserted; test if the code is the same as the code from the data base

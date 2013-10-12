@@ -68,17 +68,17 @@ class FindUserBy extends CFormModel
             $this->user = Users::model()->findByAttributes(array('email' => $this->$attribute));
         }
         if ($this->user === NULL) {
-            $this->addError($attribute, 'No data found!');
+            $this->addError($attribute, 'No data found or user is already active!');
         }else{
             if ($this->user->active) {
                 // "No data found!" error message, in order not to prevent checking for email addresses.
-                $this->addError($attribute, 'No data found!');
+                $this->addError($attribute, 'No data found or user is already active!!');
             }else{
                 $this->usersData = UsersData::model()->findByPk($this->user->id);
                 if ($this->usersData === NULL) {
                     // should not enter here
                     // "No data found!" error message, in order not to prevent checking for email addresses.
-                    $this->addError($attribute, 'No data found!');
+                    $this->addError($attribute, 'No data found or user is already active!');
                 }
             }
         }
