@@ -894,12 +894,14 @@ class UsersController extends BumController
                         $modelEmails->save(false);
                     }
                     
-                    $message = $this->sendSignUpThankYouEmail($model);
-                    
-                    if(Yii::app()->mail->send($message)){
-                        // Thamk you for Sign Up email was sent succesfully.
-                    }else{
-                        // Thamk you for Sign Up email could not be sent.
+                    if (Yii::app()->getModule('bum')->enabledSignUpThankYou){
+                        $message = $this->sendSignUpThankYouEmail($model);
+
+                        if(Yii::app()->mail->send($message)){
+                            // Thamk you for Sign Up email was sent succesfully.
+                        }else{
+                            // Thamk you for Sign Up email could not be sent.
+                        }
                     }
 
                     $linkToLoginPage = CHtml::link('Login', $this->createAbsoluteUrl('/bum/users/login'));

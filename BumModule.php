@@ -47,6 +47,12 @@ class BumModule extends CWebModule
     public $sender_signUp_thankYou = 'webmaster@localhost';
     
 	/**
+     * @var boolead
+     * Enable SignUp "thank you" email?
+     */
+    public $enabledSignUpThankYou = true;
+    
+	/**
      * @var boolean
      * If SignUp is base on invitations. Default value: false.
      */

@@ -36,6 +36,9 @@ class Settings extends BumActiveRecord
     
     CONST TRACKPASSWORDRECOVERY_DISENABLED=0;
     CONST TRACKPASSWORDRECOVERY_ENABLED=1;
+    
+    CONST SIGNUPTHANKYOU_DISENABLED=0;
+    CONST SIGNUPTHANKYOU_ENABLED=1;
         
     
     /**
@@ -47,6 +50,18 @@ class Settings extends BumActiveRecord
         return array(
             self::TRACKPASSWORDRECOVERY_DISENABLED => 'No',
             self::TRACKPASSWORDRECOVERY_ENABLED => 'Yes',
+        );
+    }
+    
+    /**
+     * @return type 
+     */
+    public static function getsSignUpThankYouOptions()
+    {
+        // because for false - 0 the attriburte active is empty, and the first one is selected...
+        return array(
+            self::SIGNUPTHANKYOU_DISENABLED => 'No',
+            self::SIGNUPTHANKYOU_ENABLED => 'Yes',
         );
     }
     

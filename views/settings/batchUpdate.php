@@ -169,6 +169,25 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                                     echo '<HR/>';
                             ?></TD></TR><?php
                         break;
+                    case 'enabledSignUpThankYou':
+                            ?><TR>
+                                <TD><?php 
+                                    echo CHtml::activeHiddenField($setting, "[$i]name");
+                                    echo CHtml::activeHiddenField($setting, "[$i]label");
+                                    echo CHtml::label($setting->label,"Settings[$i]value"); 
+                                ?></TD>
+                                <TD><?php 
+                                    echo CHtml::activeDropDownList($setting,"[$i]value", Settings::getsSignUpThankYouOptions()); 
+                                ?></TD>
+                            </TR><?php
+                            ?><TR><TD colspan="2"><?php 
+                                    echo CHtml::openTag("SPAN", array("name"=>"Settings[$i]description")); 
+                                    echo $setting->description; 
+                                    echo CHtml::closeTag("SPAN");
+                                    
+                                    echo '<HR/>';
+                            ?></TD></TR><?php
+                        break;
                     
                     case 'sender_invitation':
                     case 'sender_signUp':

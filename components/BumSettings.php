@@ -315,7 +315,18 @@ return $body_;
             ),
             'version' => 1,
         );
-        self::initSetting($module, $setting); // */
+        self::initSetting($module, $setting);
+
+        // init enabledSignUpThankYou property
+        $setting = array(
+            'name' => 'enabledSignUpThankYou',
+            'label' => 'Enable SignUp "thank you" email?',
+            'description' => '',
+            'setting_order' => 943,
+            'version' => 1,
+        );
+        self::initSetting($module, $setting);
+        
         ///////////////////////////////
 
         // init sender_registerNewEmail property
