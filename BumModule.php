@@ -41,6 +41,12 @@ class BumModule extends CWebModule
     public $hoursVerificationLinkIsActive = 144;
     
 	/**
+     * @var string
+     * From whom the confirmation email is sent? (for sign up)
+     */
+    public $sender_signUp_thankYou = 'webmaster@localhost';
+    
+	/**
      * @var boolean
      * If SignUp is base on invitations. Default value: false.
      */

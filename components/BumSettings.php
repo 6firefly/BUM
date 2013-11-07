@@ -274,6 +274,48 @@ return $body_;
             'version' => 1,
         );
         self::initSetting($module, $setting);
+
+        // init sender_signUp property
+        $setting = array(
+            'name' => 'sender_signUp_thankYou',
+            'label' => 'Sign Up thank you email responder:',
+            'description' => 'When a new user register to this site, and activate his/hers account, a thank you email is sent, informing about the site offerings.',
+            'setting_order' => 933,
+            'email_content'=>array(
+                'subject'=>'Thank you for joining our greate site!',
+                'body'=> '
+$linkToLogInPage = CHtml::link($this->createAbsoluteUrl(\'/bum/users/login\'), $this->createAbsoluteUrl(\'/bum/users/login\'));
+$body_ = "<p>Dear $modelUsers->user_name,</p> <p>Welcome to our community, we hope you enjoy it as much as us ;)</p> <p>Your user name is: {$modelUsers->user_name}<br/>Log in page is: {$linkToLogInPage}</p> <p>Yours faithfully,<br/>site team.</p>";
+
+return $body_;
+                    ',
+                'available_variables'=>'
+                    <DIV class="warning">ATTENTION! $body_ variable is parsed using eval(); function. Be very carefull who has the right to change the above php code and how you change it!</DIV>
+                    
+                    <DL>
+                        <DT>$modelUsers</DT>
+                        <DD>
+                            The model "Users".<BR/>
+                            <DL>
+                                <DT>$modelUsers->user_name</DT>
+                                <DD>User name of current user.</DD>
+                            </DL>
+                        </DD>
+                        
+                        <DT>$this</DT>
+                        <DD>The controller instance.</BR>
+                            <DL>
+                                <DT>$this->module</DT>
+                                <DD>This module; aka BUM.</DD>
+                            </DL>
+                        </DD>
+                    </DL>
+                    ',
+                'version'=>6,
+            ),
+            'version' => 1,
+        );
+        self::initSetting($module, $setting); // */
         ///////////////////////////////
 
         // init sender_registerNewEmail property

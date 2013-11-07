@@ -172,6 +172,7 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
                     
                     case 'sender_invitation':
                     case 'sender_signUp':
+                    case 'sender_signUp_thankYou':
                     case 'sender_registerNewEmail':
                     case 'sender_passwordRecovery':
                             ?><TR>

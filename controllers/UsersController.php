@@ -893,6 +893,14 @@ class UsersController extends BumController
                         $modelEmails->verified = true;
                         $modelEmails->save(false);
                     }
+                    
+                    $message = $this->sendSignUpThankYouEmail($model);
+                    
+                    if(Yii::app()->mail->send($message)){
+                        // Thamk you for Sign Up email was sent succesfully.
+                    }else{
+                        // Thamk you for Sign Up email could not be sent.
+                    }
 
                     $linkToLoginPage = CHtml::link('Login', $this->createAbsoluteUrl('/bum/users/login'));
                     Yii::app()->user->setFlash('success', "Account has been activated! You may now {$linkToLoginPage}.");
@@ -902,6 +910,27 @@ class UsersController extends BumController
             }   
         }
         
+    }
+    
+    /**
+     * Send the Thank You for Sign Up email
+     * Uses Yii-Mail extension.
+     * 
+     * @param type $userModel
+     * @return $YiiMailMessage
+     */
+    public function sendSignUpThankYouEmail($model){
+        $moduleSiteEmailsContact = SiteEmailsContent::model()->findByAttributes(array("name" => 'sender_signUp_thankYou'));
+        
+        $message = new YiiMailMessage;
+        
+        $message->view = 'signUp_thankYou';
+        $message->setBody(array('modelUsers'=>$model, 'moduleSiteEmailsContact' => $moduleSiteEmailsContact), 'text/html');
+        $message->subject = $moduleSiteEmailsContact->subject;
+        $message->addTo($model->email);
+        $message->from = $this->module->sender_signUp;
+        
+        return $message;
     }
 
 	/**
