@@ -173,7 +173,7 @@ class Invitations extends BumActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'idUser' => array(self::BELONGS_TO, 'Users', 'id_user'),
-			'idUserInvited' => array(self::BELONGS_TO, 'Users', 'id_user'),
+			'idUserInvited' => array(self::BELONGS_TO, 'Users', 'id_user_invited'),
 		);
 	}
 

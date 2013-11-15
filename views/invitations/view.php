@@ -100,11 +100,11 @@ $this->widget('zii.widgets.grid.CGridView', array(
 	'columns'=>array(
 		array(
             'name'=>'search_user',
-            'value'=>'$data->idUser->user_name',
+            'value'=>'isset($data->idUser->user_name)?$data->idUser->user_name:""',
         ), // what user sent the invitation
 		array(
             'name'=>'search_user_invited',
-            'value'=>'$data->idUserInvited->user_name',
+            'value'=>'isset($data->idUserInvited->user_name)?$data->idUserInvited->user_name:""',
         ), // what user accepted the invitation
 		'email', // to what email was the invitation sent
         'note', // invitation note
