@@ -159,6 +159,10 @@ class InstallController extends BumController
                     $operation = $auth->createOperation('users_all_privateProfile_view', 'View a user private profile.');
                         $operationTree[] = array('text'=>"<B>{$operation->name}</B> operation <I>{$operation->description}</I>");
                 }
+                if(!$auth->getAuthItem('users_all_invites_view')){
+                    $operation = $auth->createOperation('users_all_invites_view', 'View details about invites sent.');
+                        $operationTree[] = array('text'=>"<B>{$operation->name}</B> operation <I>{$operation->description}</I>");
+                }
                 if(!$auth->getAuthItem('password_change')){
                     $operation = $auth->createOperation('password_change', 'With this right user can change the password without knowing the old password.');
                         $operationTree[] = array('text'=>"<B>{$operation->name}</B> operation <I>{$operation->description}</I>");
@@ -175,6 +179,7 @@ class InstallController extends BumController
                 if(!$task->hasChild('users_all_view')) $task->addChild('users_all_view');
                 if(!$task->hasChild('users_profile_update')) $task->addChild('users_profile_update');
                 if(!$task->hasChild('users_all_privateProfile_view')) $task->addChild('users_all_privateProfile_view');
+                if(!$task->hasChild('users_all_invites_view')) $task->addChild('users_all_invites_view');
                 if(!$task->hasChild('password_change')) $task->addChild('password_change');
                 
                 $taskTree[] = array(

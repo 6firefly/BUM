@@ -83,7 +83,7 @@ class InvitationsController extends BumController
 	{
 		return array(
 			array('allow', // allow authenticated user to perform 'AJAXCreate' and 'AJAXView' actions
-				'actions'=>array('AJAXCreate', 'AJAXView'),
+				'actions'=>array('AJAXCreate', 'AJAXView', 'view'),
 				'users'=>array('@'),
 			),
 			array('deny',  // deny all users
@@ -91,6 +91,20 @@ class InvitationsController extends BumController
 			),
 		);
 	}
+    
+    /**
+     * View intives sent, who sent them and who accepted..
+     */
+    public function actionView(){
+        $model = new Invitations('search');
+        $model->unsetAttributes();  // clear any default values
+        if(isset($_GET['Invitations']))
+            $model->attributes=$_GET['Invitations'];
+
+        $this->render('view',array(
+            'model'=>$model,
+        ));
+    }
     
     /**
 	 * Creates a new model.

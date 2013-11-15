@@ -28,6 +28,11 @@
  */
 class Invitations extends BumActiveRecord
 {
+    
+    public $search_user;
+    public $search_user_invited;
+
+    
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -65,7 +70,7 @@ class Invitations extends BumActiveRecord
 			array('note', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, id_user, email, invitation_code, date_of_invitation_send, date_of_invitation_accepted', 'safe', 'on'=>'search'),
+			array('id_user, search_user, email, invitation_code, search_user_invited, date_of_invitation_send, date_of_invitation_accepted', 'safe', 'on'=>'search'),
 		);
 	}
     
@@ -181,11 +186,14 @@ class Invitations extends BumActiveRecord
 			'id' => 'ID',
 			'id_user' => 'Id User',
 			'id_user_invited' => 'Id Invited User',
-			'email' => 'Email',
+			'email' => 'Email (invitation to)',
             'note' => 'Note',
 			'invitation_code' => 'Invitation Code',
 			'date_of_invitation_send' => 'Send Date',
 			'date_of_invitation_accepted' => 'Accepted Date',
+            
+            'search_user'=>'User',
+            'search_user_invited'=>'Invited User',
 		);
 	}
 
@@ -199,17 +207,36 @@ class Invitations extends BumActiveRecord
 		// should not be searched.
 
 		$criteria=new CDbCriteria;
+        
+        $criteria->with = array('idUser', 'idUserInvited');
 
 		$criteria->compare('id',$this->id,true);
 		$criteria->compare('id_user',$this->id_user,true);
-		$criteria->compare('email',$this->email,true);
+		$criteria->compare('t.email',$this->email,true);
         $criteria->compare('note',$this->note,true);
 		$criteria->compare('invitation_code',$this->invitation_code,true);
 		$criteria->compare('date_of_invitation_send',$this->date_of_invitation_send,true);
 		$criteria->compare('date_of_invitation_accepted',$this->date_of_invitation_accepted,true);
+        
+		$criteria->compare('idUser.user_name',$this->search_user,true);
+		$criteria->compare('idUserInvited.user_name',$this->search_user_invited,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+            'sort'=>array(
+                'attributes'=>array(
+                    'search_user'=>array(
+                        'asc'=>'idUser.user_name',
+                        'desc'=>'idUser.user_name DESC',
+                    ),
+                    'search_user_invited'=>array(
+                        'asc'=>'idUserInvited.user_name',
+                        'desc'=>'idUserInvited.user_name DESC',
+                    ),
+                    '*',
+                ),
+            )
+            
 		));
 	}
     
