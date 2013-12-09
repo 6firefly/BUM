@@ -99,12 +99,16 @@ $this->widget('zii.widgets.grid.CGridView', array(
     //'afterAjaxUpdate' => 'function(){}',
 	'columns'=>array(
 		array(
-            'name'=>'search_user',
-            'value'=>'isset($data->idUser->user_name)?$data->idUser->user_name:""',
+            'class'=>'CLinkColumn',
+            'header'=>'User',
+            'urlExpression'=>'isset($data->idUser)?Yii::app()->createUrl("' . $this->getModule()->name . '/users/viewProfile",array("id"=>$data->idUser->id)):""',
+            'labelExpression'=>'isset($data->idUser)?$data->idUser->user_name:""',
         ), // what user sent the invitation
 		array(
-            'name'=>'search_user_invited',
-            'value'=>'isset($data->idUserInvited->user_name)?$data->idUserInvited->user_name:""',
+            'class'=>'CLinkColumn',
+            'header'=>'Invited User',
+            'urlExpression'=>'isset($data->idUserInvited)?Yii::app()->createUrl("' . $this->getModule()->name . '/users/viewProfile",array("id"=>$data->idUserInvited->id)):""',
+            'labelExpression'=>'isset($data->idUserInvited)?$data->idUserInvited->user_name:""',
         ), // what user accepted the invitation
 		'email', // to what email was the invitation sent
         'note', // invitation note
